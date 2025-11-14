@@ -3,7 +3,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - BLACK GOLD</title>
+    <title>Profile & Settings - BLACK GOLD</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
     <script>
@@ -730,7 +730,7 @@
                   class="hidden lg:flex items-center justify-between py-4 overflow-x-auto"
                 >
                   <a
-                    class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gold-600/10 hover:shadow-lg hover:shadow-gold-600/20 whitespace-nowrap bg-gold-600/20 text-gold-400 shadow-lg shadow-gold-600/30"
+                    class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gold-600/10 hover:shadow-lg hover:shadow-gold-600/20 whitespace-nowrap text-gold-600 hover:text-gold-400"
                     href="index.html"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -887,7 +887,7 @@
                     ><span class="text-sm font-medium">Oil Price Forecast</span></a
                   >
                   <a
-                    class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gold-600/10 hover:shadow-lg hover:shadow-gold-600/20 whitespace-nowrap text-gold-600 hover:text-gold-400"
+                    class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gold-600/10 hover:shadow-lg hover:shadow-gold-600/20 whitespace-nowrap bg-gold-600/20 text-gold-400 shadow-lg shadow-gold-600/30"
                     href="profile.html"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -951,666 +951,285 @@
                   </button>
                 </div>
               </div>
-            </nav>            <main class="container mx-auto px-4 py-8">
+            </nav>
+            <main class="container mx-auto px-4 py-8">
               <div class="space-y-8">
                 <div class="text-center py-8">
                   <h1 class="text-4xl font-bold text-gold-400 mb-4">
-                    Welcome to BLACK GOLD Dashboard
+                    Profile & Settings
                   </h1>
-                  <p class="text-gold-600 text-lg">
-                    Monitor your investments, track energy markets, and manage
-                    your portfolio
+                  <p class="text-gold-600 text-lg max-w-3xl mx-auto">
+                    Manage your account information, preferences, and security settings.
                   </p>
                 </div>
-                <div
-                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                >
-                  <div
-                    class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20 hover:shadow-xl hover:shadow-gold-600/30 text-center"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-coins w-8 h-8 mx-auto mb-4 text-gold-400"
-                    >
-                      <circle cx="8" cy="8" r="6"></circle>
-                      <path d="M18.09 10.37A6 6 0 1 1 10.34 18"></path>
-                      <path d="M7 6h1v4"></path>
-                      <path d="m16.71 13.88.7.71-2.82 2.82"></path>
+                <div class="flex space-x-1 bg-black/50 rounded-lg p-1 max-w-md mx-auto mb-8" data-tabs>
+                  <button data-tab-button="profile" class="flex items-center space-x-2 px-4 py-2 rounded-md transition-all flex-1 justify-center bg-gold-600/20 text-gold-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <h3 class="text-gold-600 text-sm font-medium mb-2">
-                      Total BGC in Circulation
-                    </h3>
-                    <p class="text-2xl font-bold text-gold-400 mb-2">
-                      2,450,000
-                    </p>
-                    <span class="text-sm text-green-400">+5.2%</span>
-                  </div>
-                  <div
-                    class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20 hover:shadow-xl hover:shadow-gold-600/30 text-center"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-zap w-8 h-8 mx-auto mb-4 text-green-400"
-                    >
-                      <polygon
-                        points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
-                      ></polygon>
+                    <span class="text-sm font-medium">Profile</span>
+                  </button>
+                  <button data-tab-button="settings" class="flex items-center space-x-2 px-4 py-2 rounded-md transition-all flex-1 justify-center text-gold-600 hover:text-gold-400 hover:bg-gold-600/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
                     </svg>
-                    <h3 class="text-gold-600 text-sm font-medium mb-2">
-                      Your Staked Tokens
-                    </h3>
-                    <p class="text-2xl font-bold text-gold-400 mb-2">8,500</p>
-                    <span class="text-sm text-green-400">+12.8%</span>
-                  </div>
-                  <div
-                    class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20 hover:shadow-xl hover:shadow-gold-600/30 text-center"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-trending-up w-8 h-8 mx-auto mb-4 text-orange-400"
-                    >
-                      <polyline
-                        points="22 7 13.5 15.5 8.5 10.5 2 17"
-                      ></polyline>
-                      <polyline points="16 7 22 7 22 13"></polyline>
+                    <span class="text-sm font-medium">Settings</span>
+                  </button>
+                  <button data-tab-button="security" class="flex items-center space-x-2 px-4 py-2 rounded-md transition-all flex-1 justify-center text-gold-600 hover:text-gold-400 hover:bg-gold-600/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 13c0 5-3.5 7.5-7.66 8.83a7 7 0 0 1-2.34-.34c-.26-.09-.48-.19-.66-.3a2 2 0 0 1-.75-1.22c-.05-.2-.02-.42.05-.63.13-.42.4-.78.75-1.05.7-.53 1.6-.8 2.5-.8h.05a2.5 2.5 0 0 0 2.5-2.5V4.15a2 2 0 0 1 1.7-1.98l.3-.05A10 10 0 0 1 20 13Z"></path>
+                      <path d="M9 12a2.5 2.5 0 0 0 5 0"></path>
                     </svg>
-                    <h3 class="text-gold-600 text-sm font-medium mb-2">
-                      Live Oil Price
-                    </h3>
-                    <p class="text-2xl font-bold text-gold-400 mb-2">$82.45</p>
-                    <span class="text-sm text-red-400">-1.47%</span>
-                  </div>
-                  <div
-                    class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20 hover:shadow-xl hover:shadow-gold-600/30 text-center"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-bar-chart3 w-8 h-8 mx-auto mb-4 text-blue-400"
-                    >
-                      <path d="M3 3v18h18"></path>
-                      <path d="M18 17V9"></path>
-                      <path d="M13 17V5"></path>
-                      <path d="M8 17v-3"></path>
-                    </svg>
-                    <h3 class="text-gold-600 text-sm font-medium mb-2">
-                      Market Cap
-                    </h3>
-                    <p class="text-2xl font-bold text-gold-400 mb-2">$125.8M</p>
-                    <span class="text-sm text-green-400">+8.9%</span>
-                  </div>
+                    <span class="text-sm font-medium">Security</span>
+                  </button>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div
-                    class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20 hover:shadow-xl hover:shadow-gold-600/30"
-                  >
+                
+                <!-- Profile Tab -->
+                <div data-tab-panel="profile" class="max-w-2xl mx-auto space-y-6">
+                  <div class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6">
                     <div class="flex items-center justify-between mb-6">
-                      <h2 class="text-xl font-semibold text-gold-400">
-                        AI Price Forecast
-                      </h2>
-                      <button
-                        class="font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 border border-gold-600 text-gold-400 hover:bg-gold-600/10 hover:border-gold-500 px-3 py-1.5 text-sm cursor-pointer"
-                      >
-                        View Details
-                      </button>
+                      <h2 class="text-xl font-semibold text-gold-400">Personal Information</h2>
+                      <button class="px-3 py-1 bg-gold-600/20 text-gold-400 rounded text-sm">Edit</button>
                     </div>
                     <div class="space-y-4">
-                      <div class="bg-gold-600/10 rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                          <span class="text-gold-600">BGC Token</span
-                          ><span class="text-green-400">+8.5% (7 days)</span>
-                        </div>
-                        <div class="w-full bg-black/50 rounded-full h-2">
-                          <div
-                            class="bg-gradient-to-r from-gold-600 to-gold-400 h-2 rounded-full w-3/4"
-                          ></div>
-                        </div>
+                      <div>
+                        <label class="block text-gold-400 text-sm font-medium mb-2">Full Name</label>
+                        <p class="text-gold-600 bg-black/30 rounded-lg px-4 py-2">Rashad Mammadov</p>
                       </div>
-                      <div class="bg-gold-600/10 rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                          <span class="text-gold-600">Oil Price</span
-                          ><span class="text-green-400">+3.2% (7 days)</span>
-                        </div>
-                        <div class="w-full bg-black/50 rounded-full h-2">
-                          <div
-                            class="bg-gradient-to-r from-orange-600 to-orange-400 h-2 rounded-full w-1/2"
-                          ></div>
-                        </div>
+                      <div>
+                        <label class="block text-gold-400 text-sm font-medium mb-2">Phone Number</label>
+                        <p class="text-gold-600 bg-black/30 rounded-lg px-4 py-2">+994 55 552 57 47</p>
+                      </div>
+                      <div>
+                        <label class="block text-gold-400 text-sm font-medium mb-2">Country</label>
+                        <p class="text-gold-600 bg-black/30 rounded-lg px-4 py-2">Azerbaijan</p>
                       </div>
                     </div>
                   </div>
-                  <div
-                    class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20 hover:shadow-xl hover:shadow-gold-600/30"
-                  >
-                    <h2 class="text-xl font-semibold text-gold-400 mb-6">
-                      Your Portfolio
-                    </h2>
-                    <div class="space-y-4">
-                      <div class="flex justify-between items-center">
-                        <span class="text-gold-600">Total Balance</span
-                        ><span class="text-xl font-bold text-gold-400"
-                          >$15420.50</span
-                        >
+                  <div class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold text-gold-400 mb-6">Account Overview</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div class="space-y-4">
+                        <div class="flex justify-between">
+                          <span class="text-gold-600">Account Balance:</span>
+                          <span class="text-gold-400 font-semibold">$15,420.50</span>
+                        </div>
+                        <div class="flex justify-between">
+                          <span class="text-gold-600">Staked Tokens:</span>
+                          <span class="text-green-400 font-semibold">8,500 BGC</span>
+                        </div>
+                        <div class="flex justify-between">
+                          <span class="text-gold-600">Account Type:</span>
+                          <span class="text-blue-400 font-semibold">Premium</span>
+                        </div>
                       </div>
-                      <div class="flex justify-between items-center">
-                        <span class="text-gold-600">Staked Tokens</span
-                        ><span class="text-lg font-semibold text-green-400"
-                          >8,500 BGC</span
-                        >
+                      <div class="space-y-4">
+                        <div class="flex justify-between">
+                          <span class="text-gold-600">Member Since:</span>
+                          <span class="text-gold-400">January 2024</span>
+                        </div>
+                        <div class="flex justify-between">
+                          <span class="text-gold-600">Total Trades:</span>
+                          <span class="text-gold-400">156</span>
+                        </div>
+                        <div class="flex justify-between">
+                          <span class="text-gold-600">Verification:</span>
+                          <span class="text-green-400">✓ Verified</span>
+                        </div>
                       </div>
-                      <div class="flex justify-between items-center">
-                        <span class="text-gold-600">Available for Trading</span
-                        ><span class="text-lg font-semibold text-blue-400"
-                          >$4626.15</span
-                        >
-                      </div>
-                      <button
-                        class="font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black hover:shadow-lg hover:shadow-gold-600/30 px-4 py-2 text-sm cursor-pointer w-full mt-4"
-                      >
-                        Manage Portfolio
-                      </button>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20 hover:shadow-xl hover:shadow-gold-600/30"
-                >
-                  <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-semibold text-gold-400">
-                      Live Borsa Xəbərləri
-                    </h2>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-newspaper text-gold-600 w-6 h-6"
-                    >
-                      <path
-                        d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"
-                      ></path>
-                      <path d="M18 14h-8"></path>
-                      <path d="M15 18h-5"></path>
-                      <path d="M10 6h8v4h-8V6Z"></path>
-                    </svg>
-                  </div>
-                  <div class="flex space-x-1 mb-6 bg-black/50 rounded-lg p-1" data-tabs>
-                    <button
-                      data-tab-button="global"
-                      class="flex items-center space-x-2 px-4 py-2 rounded-md transition-all bg-gold-600/20 text-gold-400"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-globe"
-                      >
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path
-                          d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
-                        ></path>
-                        <path d="M2 12h20"></path></svg
-                      ><span class="text-sm font-medium">Global</span></button
-                    ><button
-                      data-tab-button="energy"
-                      class="flex items-center space-x-2 px-4 py-2 rounded-md transition-all text-gold-600 hover:text-gold-400 hover:bg-gold-600/10"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-zap"
-                      >
-                        <polygon
-                          points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
-                        ></polygon></svg
-                      ><span class="text-sm font-medium">Energy</span></button
-                    ><button
-                      data-tab-button="crypto"
-                      class="flex items-center space-x-2 px-4 py-2 rounded-md transition-all text-gold-600 hover:text-gold-400 hover:bg-gold-600/10"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-coins"
-                      >
-                        <circle cx="8" cy="8" r="6"></circle>
-                        <path d="M18.09 10.37A6 6 0 1 1 10.34 18"></path>
-                        <path d="M7 6h1v4"></path>
-                        <path d="m16.71 13.88.7.71-2.82 2.82"></path></svg
-                      ><span class="text-sm font-medium">Crypto</span></button
-                    ><button
-                      data-tab-button="regional"
-                      class="flex items-center space-x-2 px-4 py-2 rounded-md transition-all text-gold-600 hover:text-gold-400 hover:bg-gold-600/10"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-bar-chart3"
-                      >
-                        <path d="M3 3v18h18"></path>
-                        <path d="M18 17V9"></path>
-                        <path d="M13 17V5"></path>
-                        <path d="M8 17v-3"></path></svg
-                      ><span class="text-sm font-medium">Regional</span>
-                    </button>
-                  </div>
-                  <div data-tab-panel="global" class="space-y-3 max-h-64 overflow-y-auto">
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Global Oil Reserves Reach New Highs
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>Energy Weekly</span><span>•</span
-                          ><span>2 hours ago</span>
+                
+                <!-- Settings Tab -->
+                <div data-tab-panel="settings" class="max-w-2xl mx-auto space-y-6 hidden">
+                  <div class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20">
+                    <h2 class="text-xl font-semibold text-gold-400 mb-6">Preferences</h2>
+                    <div class="space-y-6">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gold-400">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                            <path d="M2 12h20"></path>
+                          </svg>
+                          <div>
+                            <h3 class="text-gold-400 font-medium">Language</h3>
+                            <p class="text-gold-600 text-sm">Choose your preferred language</p>
+                          </div>
                         </div>
+                        <select class="bg-black/50 border border-gold-600/30 rounded-lg px-3 py-2 text-gold-400 focus:border-gold-500 focus:outline-none">
+                          <option value="en">English</option>
+                          <option value="az">Azərbaycan</option>
+                          <option value="tr">Türkçe</option>
+                          <option value="ru">Русский</option>
+                        </select>
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
-                    </div>
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Renewable Energy Investments Surge 25%
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>GreenTech</span><span>•</span
-                          ><span>4 hours ago</span>
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gold-400">
+                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                          </svg>
+                          <div>
+                            <h3 class="text-gold-400 font-medium">Theme</h3>
+                            <p class="text-gold-600 text-sm">Switch between light and dark mode</p>
+                          </div>
                         </div>
+                        <button class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
+                          Dark Mode
+                        </button>
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
-                    </div>
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Cryptocurrency Market Shows Strong Recovery
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>CryptoNews</span><span>•</span
-                          ><span>6 hours ago</span>
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gold-400">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                          </svg>
+                          <div>
+                            <h3 class="text-gold-400 font-medium">Notifications</h3>
+                            <p class="text-gold-600 text-sm">Receive alerts and updates</p>
+                          </div>
                         </div>
+                        <button class="px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
+                          Enabled
+                        </button>
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
                     </div>
                   </div>
-                  <div data-tab-panel="energy" class="space-y-3 max-h-64 overflow-y-auto hidden">
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Solar Panel Efficiency Breaks New Records
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>Solar Today</span><span>•</span
-                          ><span>1 hour ago</span>
+                  <div class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20">
+                    <h2 class="text-xl font-semibold text-gold-400 mb-6">Notification Preferences</h2>
+                    <div class="space-y-4">
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <h3 class="text-gold-400 font-medium">Price Alerts</h3>
+                          <p class="text-gold-600 text-sm">Get notified when prices reach your targets</p>
                         </div>
+                        <input type="checkbox" checked class="w-4 h-4 text-gold-400 bg-black border-gold-600 rounded focus:ring-gold-400">
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
-                    </div>
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Wind Energy Capacity Doubles in Azerbaijan
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>Wind Power</span><span>•</span
-                          ><span>3 hours ago</span>
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <h3 class="text-gold-400 font-medium">Trade Confirmations</h3>
+                          <p class="text-gold-600 text-sm">Receive confirmations for all trades</p>
                         </div>
+                        <input type="checkbox" checked class="w-4 h-4 text-gold-400 bg-black border-gold-600 rounded focus:ring-gold-400">
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
-                    </div>
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Hydroelectric Projects Get Green Light
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>Energy Report</span><span>•</span
-                          ><span>5 hours ago</span>
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <h3 class="text-gold-400 font-medium">Market News</h3>
+                          <p class="text-gold-600 text-sm">Stay updated with market developments</p>
                         </div>
+                        <input type="checkbox" class="w-4 h-4 text-gold-400 bg-black border-gold-600 rounded focus:ring-gold-400">
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <h3 class="text-gold-400 font-medium">Account Security</h3>
+                          <p class="text-gold-600 text-sm">Security alerts and login notifications</p>
+                        </div>
+                        <input type="checkbox" class="w-4 h-4 text-gold-400 bg-black border-gold-600 rounded focus:ring-gold-400">
+                      </div>
                     </div>
                   </div>
-                  <div data-tab-panel="crypto" class="space-y-3 max-h-64 overflow-y-auto hidden">
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          BGC Token Gains 15% in Weekly Trading
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>TokenWatch</span><span>•</span
-                          ><span>30 minutes ago</span>
+                </div>
+                
+                <!-- Security Tab -->
+                <div data-tab-panel="security" class="max-w-2xl mx-auto space-y-6 hidden">
+                  <div class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20">
+                    <h2 class="text-xl font-semibold text-gold-400 mb-6">Security Settings</h2>
+                    <div class="space-y-6">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400">
+                            <path d="M20 13c0 5-3.5 7.5-7.66 8.83a7 7 0 0 1-2.34-.34c-.26-.09-.48-.19-.66-.3a2 2 0 0 1-.75-1.22c-.05-.2-.02-.42.05-.63.13-.42.4-.78.75-1.05.7-.53 1.6-.8 2.5-.8h.05a2.5 2.5 0 0 0 2.5-2.5V4.15a2 2 0 0 1 1.7-1.98l.3-.05A10 10 0 0 1 20 13Z"></path>
+                            <path d="M9 12a2.5 2.5 0 0 0 5 0"></path>
+                          </svg>
+                          <div>
+                            <h3 class="text-gold-400 font-medium">Two-Factor Authentication</h3>
+                            <p class="text-gold-600 text-sm">Add an extra layer of security to your account</p>
+                          </div>
                         </div>
+                        <span class="px-3 py-1 bg-green-600/20 text-green-400 rounded text-sm font-medium">Enabled</span>
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
-                    </div>
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          DeFi Protocols Show Increased Activity
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>DeFi Pulse</span><span>•</span
-                          ><span>2 hours ago</span>
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gold-400">
+                            <circle cx="7.5" cy="15.5" r="5.5"></circle>
+                            <path d="m21 2-9.6 9.6"></path>
+                            <path d="m15.5 7.5 3 3L22 7l-3-3"></path>
+                          </svg>
+                          <div>
+                            <h3 class="text-gold-400 font-medium">Password</h3>
+                            <p class="text-gold-600 text-sm">Last changed 30 days ago</p>
+                          </div>
                         </div>
+                        <button class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
+                          Change Password
+                        </button>
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
-                    </div>
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Institutional Crypto Adoption Accelerates
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>Crypto Insider</span><span>•</span
-                          ><span>4 hours ago</span>
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gold-400">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                          </svg>
+                          <div>
+                            <h3 class="text-gold-400 font-medium">Active Sessions</h3>
+                            <p class="text-gold-600 text-sm">Manage your active login sessions</p>
+                          </div>
                         </div>
+                        <button class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
+                          View Sessions
+                        </button>
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
                     </div>
                   </div>
-                  <div data-tab-panel="regional" class="space-y-3 max-h-64 overflow-y-auto hidden">
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Azerbaijan Announces New Energy Strategy
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>AzerNews</span><span>•</span
-                          ><span>1 hour ago</span>
+                  <div class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20">
+                    <h2 class="text-xl font-semibold text-gold-400 mb-6">Recent Security Activity</h2>
+                    <div class="space-y-3">
+                      <div class="flex items-center justify-between p-3 bg-black/30 rounded-lg">
+                        <div>
+                          <div class="flex items-center space-x-2">
+                            <span class="text-gold-400 font-medium">Login Successful</span>
+                            <span class="text-gold-600 text-sm">•</span>
+                            <span class="text-gold-600 text-sm">Chrome on Windows</span>
+                          </div>
+                          <div class="flex items-center space-x-2 text-xs text-gold-600 mt-1">
+                            <span>2024-12-15 14:30</span>
+                            <span>•</span>
+                            <span>Baku, Azerbaijan</span>
+                          </div>
                         </div>
+                        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
+                      <div class="flex items-center justify-between p-3 bg-black/30 rounded-lg">
+                        <div>
+                          <div class="flex items-center space-x-2">
+                            <span class="text-gold-400 font-medium">2FA Enabled</span>
+                            <span class="text-gold-600 text-sm">•</span>
+                            <span class="text-gold-600 text-sm">Chrome on Windows</span>
+                          </div>
+                          <div class="flex items-center space-x-2 text-xs text-gold-600 mt-1">
+                            <span>2024-12-10 09:15</span>
+                            <span>•</span>
+                            <span>Baku, Azerbaijan</span>
+                          </div>
+                        </div>
+                        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                      </div>
                     </div>
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Caspian Sea Oil Exploration Expands
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>Regional Energy</span><span>•</span
-                          ><span>3 hours ago</span>
-                        </div>
-                      </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
-                    </div>
-                    <div
-                      class="flex items-center justify-between p-3 bg-black/30 rounded-lg hover:bg-black/40 transition-colors cursor-pointer"
-                    >
-                      <div class="flex-1">
-                        <h3 class="text-gold-400 font-medium text-sm mb-1">
-                          Black Gold Platform Partnerships Grow
-                        </h3>
-                        <div
-                          class="flex items-center space-x-2 text-xs text-gold-600"
-                        >
-                          <span>Business Today</span><span>•</span
-                          ><span>5 hours ago</span>
-                        </div>
-                      </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-chevron-right text-gold-600 w-4 h-4"
-                      >
-                        <path d="m9 18 6-6-6-6"></path>
-                      </svg>
+                  </div>
+                  <div class="bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20">
+                    <h2 class="text-xl font-semibold text-gold-400 mb-6">Account Actions</h2>
+                    <div class="space-y-4">
+                      <button class="w-full px-4 py-2 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg transition-colors">
+                        Download Account Data
+                      </button>
+                      <button class="w-full px-4 py-2 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg transition-colors">
+                        Export Transaction History
+                      </button>
+                      <button class="w-full px-4 py-2 border border-red-600/30 text-red-400 hover:bg-red-600/10 rounded-lg transition-colors">
+                        Deactivate Account
+                      </button>
                     </div>
                   </div>
                 </div>
