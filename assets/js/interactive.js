@@ -898,11 +898,12 @@ function loadUserName() {
   }
 }
 
+// Global variables for market ticker
+let marketTickerInterval = null;
+let marketTickerCurrentPrices = {};
+
 // Initialize market ticker with real data
 function initMarketTicker() {
-  const tickerContainer = document.querySelector('[data-ticker-container]');
-  if (!tickerContainer) return;
-  
   // Add data attributes to price elements if not already present
   const tickerContent = document.querySelector('[data-ticker-content]');
   if (tickerContent) {
@@ -926,166 +927,159 @@ function initMarketTicker() {
     });
   }
   
-  // Store previous prices for calculating change
-  const previousPrices = JSON.parse(localStorage.getItem('tickerPrices') || '{}');
-  const currentPrices = {};
+  // Only set up interval if it doesn't exist
+  if (marketTickerInterval === null) {
+    // Initial fetch
+    fetchAllTickerPrices();
+    
+    // Update every 5 seconds for real-time data
+    marketTickerInterval = setInterval(fetchAllTickerPrices, 5000);
+  }
+}
+
+// Update ticker item (global function)
+function updateTickerItem(symbol, price, changePercent) {
+  const priceElements = document.querySelectorAll(`[data-ticker-price][data-ticker-symbol="${symbol}"]`);
+  const percentElements = document.querySelectorAll(`[data-ticker-percent][data-ticker-symbol="${symbol}"]`);
   
-  // Update ticker item
-  function updateTickerItem(symbol, price, changePercent) {
-    const priceElements = document.querySelectorAll(`[data-ticker-price][data-ticker-symbol="${symbol}"]`);
-    const percentElements = document.querySelectorAll(`[data-ticker-percent][data-ticker-symbol="${symbol}"]`);
-    
-    // Format price based on symbol
-    let formattedPrice = price;
-    if (symbol === 'btc' || symbol === 'eth') {
-      formattedPrice = `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    } else if (symbol === 'gold') {
-      formattedPrice = `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    } else if (symbol === 'oil') {
-      formattedPrice = `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    } else {
-      formattedPrice = `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    }
-    
-    // Update all price elements (duplicated for scroll effect)
-    priceElements.forEach(el => {
-      el.textContent = formattedPrice;
-    });
-    
-    // Format and update percent change
-    const isPositive = changePercent >= 0;
-    const formattedPercent = `${isPositive ? '+' : ''}${changePercent.toFixed(2)}%`;
-    
-    percentElements.forEach(el => {
-      el.textContent = formattedPercent;
-    });
-    
-    // Update icon and color based on change
-    const changeContainers = document.querySelectorAll(`[data-ticker-percent][data-ticker-symbol="${symbol}"]`);
-    changeContainers.forEach(container => {
-      const changeDiv = container.closest('.flex.items-center.space-x-1');
-      if (changeDiv) {
-        const icon = changeDiv.querySelector('svg');
-        
-        if (isPositive) {
-          changeDiv.className = 'flex items-center space-x-1 text-green-400';
-          // Trending up icon - preserve SVG structure
-          if (icon) {
-            icon.innerHTML = '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline>';
-          }
-        } else {
-          changeDiv.className = 'flex items-center space-x-1 text-red-400';
-          // Trending down icon - preserve SVG structure
-          if (icon) {
-            icon.innerHTML = '<polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline><polyline points="16 17 22 17 22 11"></polyline>';
-          }
+  // Format price based on symbol
+  let formattedPrice = price;
+  if (symbol === 'btc' || symbol === 'eth') {
+    formattedPrice = `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  } else if (symbol === 'gold') {
+    formattedPrice = `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  } else if (symbol === 'oil') {
+    formattedPrice = `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  } else {
+    formattedPrice = `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+  
+  // Update all price elements (duplicated for scroll effect)
+  priceElements.forEach(el => {
+    el.textContent = formattedPrice;
+  });
+  
+  // Format and update percent change
+  const isPositive = changePercent >= 0;
+  const formattedPercent = `${isPositive ? '+' : ''}${changePercent.toFixed(2)}%`;
+  
+  percentElements.forEach(el => {
+    el.textContent = formattedPercent;
+  });
+  
+  // Update icon and color based on change
+  const changeContainers = document.querySelectorAll(`[data-ticker-percent][data-ticker-symbol="${symbol}"]`);
+  changeContainers.forEach(container => {
+    const changeDiv = container.closest('.flex.items-center.space-x-1');
+    if (changeDiv) {
+      const icon = changeDiv.querySelector('svg');
+      
+      if (isPositive) {
+        changeDiv.className = 'flex items-center space-x-1 text-green-400';
+        // Trending up icon - preserve SVG structure
+        if (icon) {
+          icon.innerHTML = '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline>';
+        }
+      } else {
+        changeDiv.className = 'flex items-center space-x-1 text-red-400';
+        // Trending down icon - preserve SVG structure
+        if (icon) {
+          icon.innerHTML = '<polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline><polyline points="16 17 22 17 22 11"></polyline>';
         }
       }
-    });
-    
-    currentPrices[symbol] = price;
-  }
-  
-  // Fetch Bitcoin and Ethereum from CoinGecko
-  async function fetchCryptoPrices() {
-    try {
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
-      const data = await response.json();
-      
-      if (data.bitcoin) {
-        const btcPrice = data.bitcoin.usd;
-        const btcChange = data.bitcoin.usd_24h_change || 0;
-        updateTickerItem('btc', btcPrice, btcChange);
-      }
-      
-      if (data.ethereum) {
-        const ethPrice = data.ethereum.usd;
-        const ethChange = data.ethereum.usd_24h_change || 0;
-        updateTickerItem('eth', ethPrice, ethChange);
-      }
-    } catch (error) {
-      console.error('Error fetching crypto prices:', error);
     }
-  }
+  });
   
-  // Fetch Gold and Oil prices
-  async function fetchCommodityPrices() {
-    try {
-      // Fetch Gold price - simulate realistic real-time price movements
-      const prevGold = previousPrices.gold || 2055;
-      // Small incremental changes for real-time feel (±0.1% to ±0.5% per update)
-      const goldChangePercent = (Math.random() * 0.8 - 0.4); // -0.4% to +0.4%
-      const goldPrice = prevGold * (1 + goldChangePercent / 100);
-      // Calculate 24h change based on stored previous price
-      const gold24hChange = prevGold ? ((goldPrice - prevGold) / prevGold) * 100 : goldChangePercent;
-      updateTickerItem('gold', goldPrice, gold24hChange);
-      
-      // Fetch Oil price (WTI Crude) - simulate realistic real-time price movements
-      const prevOil = previousPrices.oil || 82;
-      // Small incremental changes for real-time feel (±0.1% to ±0.5% per update)
-      const oilChangePercent = (Math.random() * 0.8 - 0.4); // -0.4% to +0.4%
-      const oilPrice = prevOil * (1 + oilChangePercent / 100);
-      // Calculate 24h change based on stored previous price
-      const oil24hChange = prevOil ? ((oilPrice - prevOil) / prevOil) * 100 : oilChangePercent;
-      updateTickerItem('oil', oilPrice, oil24hChange);
-      
-      // Try to fetch real data from a free API if available
-      // You can replace this with a real API endpoint that doesn't require authentication
-      try {
-        // Example: Using exchangerate-api.com or similar free service
-        // This is a placeholder - replace with actual API endpoint
-        const commodityResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-        // Process response if needed
-      } catch (apiError) {
-        // Fallback to simulated values (already set above)
-        console.log('Using simulated commodity prices');
-      }
-    } catch (error) {
-      console.error('Error fetching commodity prices:', error);
+  marketTickerCurrentPrices[symbol] = price;
+}
+
+// Fetch Bitcoin and Ethereum from CoinGecko
+async function fetchCryptoPrices() {
+  try {
+    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+    const data = await response.json();
+    
+    if (data.bitcoin) {
+      const btcPrice = data.bitcoin.usd;
+      const btcChange = data.bitcoin.usd_24h_change || 0;
+      updateTickerItem('btc', btcPrice, btcChange);
     }
-  }
-  
-  // Simulate custom tokens (BGC, SOLAR, WIND) with realistic real-time movements
-  function updateCustomTokens() {
-    // BGC - simulate around $0.80-0.90 with small incremental changes
-    const prevBgc = previousPrices.bgc || 0.86;
-    const bgcChangePercent = (Math.random() * 1.0 - 0.5); // -0.5% to +0.5%
-    const bgcPrice = prevBgc * (1 + bgcChangePercent / 100);
-    const bgcChange = prevBgc ? ((bgcPrice - prevBgc) / prevBgc) * 100 : bgcChangePercent;
-    updateTickerItem('bgc', bgcPrice, bgcChange);
     
-    // SOLAR - simulate around $150-165 with small incremental changes
-    const prevSolar = previousPrices.solar || 158;
-    const solarChangePercent = (Math.random() * 0.8 - 0.4); // -0.4% to +0.4%
-    const solarPrice = prevSolar * (1 + solarChangePercent / 100);
-    const solarChange = prevSolar ? ((solarPrice - prevSolar) / prevSolar) * 100 : solarChangePercent;
-    updateTickerItem('solar', solarPrice, solarChange);
-    
-    // WIND - simulate around $85-95 with small incremental changes
-    const prevWind = previousPrices.wind || 89;
-    const windChangePercent = (Math.random() * 0.8 - 0.4); // -0.4% to +0.4%
-    const windPrice = prevWind * (1 + windChangePercent / 100);
-    const windChange = prevWind ? ((windPrice - prevWind) / prevWind) * 100 : windChangePercent;
-    updateTickerItem('wind', windPrice, windChange);
+    if (data.ethereum) {
+      const ethPrice = data.ethereum.usd;
+      const ethChange = data.ethereum.usd_24h_change || 0;
+      updateTickerItem('eth', ethPrice, ethChange);
+    }
+  } catch (error) {
+    console.error('Error fetching crypto prices:', error);
   }
-  
-  // Fetch all prices
-  async function fetchAllPrices() {
-    await Promise.all([
-      fetchCryptoPrices(),
-      fetchCommodityPrices(),
-      Promise.resolve(updateCustomTokens())
-    ]);
+}
+
+// Fetch Gold and Oil prices
+async function fetchCommodityPrices() {
+  try {
+    // Store previous prices for calculating change
+    const previousPrices = JSON.parse(localStorage.getItem('tickerPrices') || '{}');
     
-    // Save current prices for next update
-    localStorage.setItem('tickerPrices', JSON.stringify(currentPrices));
+    // Fetch Gold price - simulate realistic real-time price movements
+    const prevGold = previousPrices.gold || 2055;
+    // Small incremental changes for real-time feel (±0.1% to ±0.5% per update)
+    const goldChangePercent = (Math.random() * 0.8 - 0.4); // -0.4% to +0.4%
+    const goldPrice = prevGold * (1 + goldChangePercent / 100);
+    // Calculate 24h change based on stored previous price
+    const gold24hChange = prevGold ? ((goldPrice - prevGold) / prevGold) * 100 : goldChangePercent;
+    updateTickerItem('gold', goldPrice, gold24hChange);
+    
+    // Fetch Oil price (WTI Crude) - simulate realistic real-time price movements
+    const prevOil = previousPrices.oil || 82;
+    // Small incremental changes for real-time feel (±0.1% to ±0.5% per update)
+    const oilChangePercent = (Math.random() * 0.8 - 0.4); // -0.4% to +0.4%
+    const oilPrice = prevOil * (1 + oilChangePercent / 100);
+    // Calculate 24h change based on stored previous price
+    const oil24hChange = prevOil ? ((oilPrice - prevOil) / prevOil) * 100 : oilChangePercent;
+    updateTickerItem('oil', oilPrice, oil24hChange);
+  } catch (error) {
+    console.error('Error fetching commodity prices:', error);
   }
+}
+
+// Simulate custom tokens (BGC, SOLAR, WIND) with realistic real-time movements
+function updateCustomTokens() {
+  // Store previous prices for calculating change
+  const previousPrices = JSON.parse(localStorage.getItem('tickerPrices') || '{}');
   
-  // Initial fetch
-  fetchAllPrices();
+  // BGC - simulate around $0.80-0.90 with small incremental changes
+  const prevBgc = previousPrices.bgc || 0.86;
+  const bgcChangePercent = (Math.random() * 1.0 - 0.5); // -0.5% to +0.5%
+  const bgcPrice = prevBgc * (1 + bgcChangePercent / 100);
+  const bgcChange = prevBgc ? ((bgcPrice - prevBgc) / prevBgc) * 100 : bgcChangePercent;
+  updateTickerItem('bgc', bgcPrice, bgcChange);
   
-  // Update every 5 seconds for real-time data
-  setInterval(fetchAllPrices, 5000);
+  // SOLAR - simulate around $150-165 with small incremental changes
+  const prevSolar = previousPrices.solar || 158;
+  const solarChangePercent = (Math.random() * 0.8 - 0.4); // -0.4% to +0.4%
+  const solarPrice = prevSolar * (1 + solarChangePercent / 100);
+  const solarChange = prevSolar ? ((solarPrice - prevSolar) / prevSolar) * 100 : solarChangePercent;
+  updateTickerItem('solar', solarPrice, solarChange);
+  
+  // WIND - simulate around $85-95 with small incremental changes
+  const prevWind = previousPrices.wind || 89;
+  const windChangePercent = (Math.random() * 0.8 - 0.4); // -0.4% to +0.4%
+  const windPrice = prevWind * (1 + windChangePercent / 100);
+  const windChange = prevWind ? ((windPrice - prevWind) / prevWind) * 100 : windChangePercent;
+  updateTickerItem('wind', windPrice, windChange);
+}
+
+// Fetch all prices (global function)
+async function fetchAllTickerPrices() {
+  await Promise.all([
+    fetchCryptoPrices(),
+    fetchCommodityPrices(),
+    Promise.resolve(updateCustomTokens())
+  ]);
+  
+  // Save current prices for next update
+  localStorage.setItem('tickerPrices', JSON.stringify(marketTickerCurrentPrices));
 }
 
 // Initialize trading page with real crypto data and Buy/Sell functionality
@@ -1168,7 +1162,7 @@ function initTradingPage() {
   }
   
   updateCryptoPrices();
-  setInterval(updateCryptoPrices, 10000); // Update every 10 seconds for real-time data
+  setInterval(updateCryptoPrices, 5000); // Update every 10 seconds for real-time data
 }
 
 // Initialize Buy/Sell trade buttons
@@ -1603,7 +1597,7 @@ function initSharesPage() {
   }
   
   updateStockPrices();
-  setInterval(updateStockPrices, 15000); // Update every 15 seconds for real-time data
+  setInterval(updateStockPrices, 5000); // Update every 15 seconds for real-time data
 }
 
 // Initialize watchlist functionality

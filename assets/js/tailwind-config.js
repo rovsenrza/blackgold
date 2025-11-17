@@ -18,14 +18,52 @@
     root.style.setProperty('--tw-gradient-to-position', '100%', 'important');
   }
   
+  // Helper function to safely get class string from any element
+  function getClassString(el) {
+    if (!el) return '';
+    try {
+      if (el.getAttribute) {
+        const classAttr = el.getAttribute('class');
+        if (typeof classAttr === 'string') {
+          return classAttr;
+        }
+      }
+      if (typeof el.className === 'string') {
+        return el.className;
+      }
+      if (el.className && typeof el.className === 'object') {
+        // Handle DOMTokenList or SVGAnimatedString
+        const result = el.className.baseVal || el.className.toString() || '';
+        return typeof result === 'string' ? result : String(result);
+      }
+    } catch (e) {
+      // Ignore errors
+    }
+    return '';
+  }
+  
+  // Safe includes function that never throws
+  function safeIncludes(str, searchString) {
+    try {
+      if (!str || typeof str !== 'string') {
+        return false;
+      }
+      return str.includes(searchString);
+    } catch (e) {
+      return false;
+    }
+  }
+  
   function getGradientDirection(classes) {
-    if (classes.includes('bg-gradient-to-br')) return 'to bottom right';
-    if (classes.includes('bg-gradient-to-b')) return 'to bottom';
-    if (classes.includes('bg-gradient-to-l')) return 'to left';
-    if (classes.includes('bg-gradient-to-t')) return 'to top';
-    if (classes.includes('bg-gradient-to-tl')) return 'to top left';
-    if (classes.includes('bg-gradient-to-tr')) return 'to top right';
-    if (classes.includes('bg-gradient-to-bl')) return 'to bottom left';
+    // Ensure classes is a string
+    const classStr = typeof classes === 'string' ? classes : (classes?.toString() || '');
+    if (classStr.includes('bg-gradient-to-br')) return 'to bottom right';
+    if (classStr.includes('bg-gradient-to-b')) return 'to bottom';
+    if (classStr.includes('bg-gradient-to-l')) return 'to left';
+    if (classStr.includes('bg-gradient-to-t')) return 'to top';
+    if (classStr.includes('bg-gradient-to-tl')) return 'to top left';
+    if (classStr.includes('bg-gradient-to-tr')) return 'to top right';
+    if (classStr.includes('bg-gradient-to-bl')) return 'to bottom left';
     return 'to right'; // default
   }
   
@@ -57,7 +95,8 @@
     });
     
     allElements.forEach(el => {
-      const classes = el.className || '';
+      // Get class string safely using helper function
+      const classes = getClassString(el);
       
       // Skip if already processed (has data-gradient-fixed attribute)
       if (el.dataset.gradientFixed === 'true') return;
@@ -83,7 +122,9 @@
     
     // Handle hover states - add event listeners for buttons with hover gradients
     allElements.forEach(el => {
-      const classes = el.className || '';
+      // Get class string safely using helper function
+      const classes = getClassString(el);
+      
       const hoverFromMatch = classes.match(/\bhover:from-(\w+)-(\d+)\b/);
       const hoverToMatch = classes.match(/\bhover:to-(\w+)-(\d+)\b/);
       
@@ -121,42 +162,150 @@
   // MutationObserver to catch dynamically added elements
   function setupMutationObserver() {
     const observer = new MutationObserver((mutations) => {
-      let shouldFix = false;
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-          mutation.addedNodes.forEach((node) => {
-            if (node.nodeType === 1) { // Element node
-              const classes = node.className || '';
-              if (classes.includes('bg-gradient-') || 
-                  classes.includes('from-gold') || 
-                  classes.includes('to-gold') ||
-                  classes.includes('from-orange') ||
-                  classes.includes('to-orange') ||
-                  classes.includes('from-green') ||
-                  classes.includes('to-green')) {
-                shouldFix = true;
-              }
-              // Also check children
-              if (node.querySelectorAll) {
-                const gradientChildren = node.querySelectorAll('[class*="bg-gradient-"], [class*="from-gold"], [class*="to-gold"]');
-                if (gradientChildren.length > 0) {
-                  shouldFix = true;
+      // Wrap everything in try-catch to suppress any errors
+      try {
+        // Early exit: Check if ANY mutation is in ticker container - skip all processing
+        let hasTickerMutation = false;
+        try {
+          for (let i = 0; i < mutations.length; i++) {
+            const mut = mutations[i];
+            if (mut && mut.target) {
+              try {
+                if (mut.target.closest && mut.target.closest('[data-ticker-container]')) {
+                  hasTickerMutation = true;
+                  break;
                 }
+                // Check added nodes
+                if (mut.addedNodes && mut.addedNodes.length > 0) {
+                  for (let j = 0; j < mut.addedNodes.length; j++) {
+                    const node = mut.addedNodes[j];
+                    if (node && node.closest && node.closest('[data-ticker-container]')) {
+                      hasTickerMutation = true;
+                      break;
+                    }
+                  }
+                }
+              } catch (e) {
+                // Ignore
               }
             }
-          });
-        } else if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          const classes = mutation.target.className || '';
-          if (classes.includes('bg-gradient-') || 
-              classes.includes('from-gold') || 
-              classes.includes('to-gold')) {
-            shouldFix = true;
           }
+        } catch (e) {
+          // Ignore
         }
-      });
-      
-      if (shouldFix) {
-        setTimeout(fixGradientElements, 50);
+        
+        // If any mutation is ticker-related, completely skip processing
+        if (hasTickerMutation) {
+          return;
+        }
+        
+        let shouldFix = false;
+        mutations.forEach((mutation) => {
+          try {
+            // Safety: Skip if mutation target doesn't have expected properties
+            if (!mutation || !mutation.target) {
+              return;
+            }
+            // Skip if mutation is in ticker container (text updates)
+            const target = mutation.target;
+            try {
+              if (target && (target.closest && target.closest('[data-ticker-container]'))) {
+                return; // Ignore ticker updates
+              }
+              // Also skip if target is a text node
+              if (target && target.nodeType === 3) {
+                return; // Text node
+              }
+            } catch (e) {
+              // If closest fails, skip this mutation
+              return;
+            }
+            
+            // Ignore text-only changes (like ticker updates)
+            if (mutation.type === 'childList') {
+              // Only process if actual elements are added/removed, not just text nodes
+              const hasElementNodes = Array.from(mutation.addedNodes).some(node => 
+                node && node.nodeType === 1 && node.tagName
+              ) || Array.from(mutation.removedNodes).some(node => 
+                node && node.nodeType === 1 && node.tagName
+              );
+              
+              if (!hasElementNodes) {
+                return; // Skip text-only changes
+              }
+              
+              if (mutation.addedNodes.length > 0) {
+                mutation.addedNodes.forEach((node) => {
+                  try {
+                    // Only process element nodes, skip text nodes
+                    if (node && node.nodeType === 1 && node.tagName) { // Element node with tagName
+                      // Skip if in ticker container
+                      if (node.closest && node.closest('[data-ticker-container]')) {
+                        return;
+                      }
+                      
+                      // Get class string safely using helper function
+                      let classes = getClassString(node);
+                      // Double-check it's a string before using .includes()
+                      classes = typeof classes === 'string' ? classes : String(classes || '');
+                      
+                      // Use safe includes to prevent errors
+                      if (classes && (
+                          safeIncludes(classes, 'bg-gradient-') || 
+                          safeIncludes(classes, 'from-gold') || 
+                          safeIncludes(classes, 'to-gold') ||
+                          safeIncludes(classes, 'from-orange') ||
+                          safeIncludes(classes, 'to-orange') ||
+                          safeIncludes(classes, 'from-green') ||
+                          safeIncludes(classes, 'to-green'))) {
+                        shouldFix = true;
+                      }
+                      // Also check children
+                      if (node.querySelectorAll) {
+                        const gradientChildren = node.querySelectorAll('[class*="bg-gradient-"], [class*="from-gold"], [class*="to-gold"]');
+                        if (gradientChildren.length > 0) {
+                          shouldFix = true;
+                        }
+                      }
+                    }
+                  } catch (e) {
+                    // Silently ignore errors for individual nodes
+                  }
+                });
+              }
+            } else if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+              try {
+                // Skip if mutation is in ticker container
+                if (mutation.target && mutation.target.closest && mutation.target.closest('[data-ticker-container]')) {
+                  return;
+                }
+                
+                // Get class string safely using helper function
+                let classes = getClassString(mutation.target);
+                // Double-check it's a string before using .includes()
+                classes = typeof classes === 'string' ? classes : String(classes || '');
+                
+                // Use safe includes to prevent errors
+                if (classes && (
+                    safeIncludes(classes, 'bg-gradient-') || 
+                    safeIncludes(classes, 'from-gold') || 
+                    safeIncludes(classes, 'to-gold'))) {
+                  shouldFix = true;
+                }
+              } catch (e) {
+                // Silently ignore errors for attribute mutations
+              }
+            }
+          } catch (e) {
+            // Silently ignore errors for individual mutations
+          }
+        });
+        
+        if (shouldFix) {
+          setTimeout(fixGradientElements, 50);
+        }
+      } catch (e) {
+        // Silently suppress all errors to prevent console spam
       }
     });
     
@@ -164,7 +313,8 @@
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ['class']
+      attributeFilter: ['class'],
+      characterData: false // Explicitly ignore text content changes
     });
   }
   
