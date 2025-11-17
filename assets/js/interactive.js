@@ -348,17 +348,179 @@ function populateModalWithCardData(modal, data) {
         <div class="space-y-4">
           <h4 class="text-gold-400 font-semibold">Investment Options</h4>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <button class="px-3 py-1.5 text-sm border border-gold-600 text-gold-400 hover:bg-gold-600/10 hover:border-gold-500 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 cursor-pointer">$100</button>
-            <button class="px-3 py-1.5 text-sm border border-gold-600 text-gold-400 hover:bg-gold-600/10 hover:border-gold-500 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 cursor-pointer">$500</button>
-            <button class="px-3 py-1.5 text-sm border border-gold-600 text-gold-400 hover:bg-gold-600/10 hover:border-gold-500 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 cursor-pointer">$1,000</button>
+            <button data-invest-amount="100" class="px-3 py-1.5 text-sm border border-gold-600 text-gold-400 hover:bg-gold-600/10 hover:border-gold-500 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 cursor-pointer invest-option-btn">$100</button>
+            <button data-invest-amount="500" class="px-3 py-1.5 text-sm border border-gold-600 text-gold-400 hover:bg-gold-600/10 hover:border-gold-500 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 cursor-pointer invest-option-btn">$500</button>
+            <button data-invest-amount="1000" class="px-3 py-1.5 text-sm border border-gold-600 text-gold-400 hover:bg-gold-600/10 hover:border-gold-500 font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 cursor-pointer invest-option-btn">$1,000</button>
           </div>
-          <button class="w-full bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black hover:shadow-lg hover:shadow-gold-600/30 font-medium rounded-lg px-4 py-2 text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 cursor-pointer">
+          <div>
+            <label class="block text-gold-400 text-sm font-medium mb-2">Or Enter Custom Amount</label>
+            <input type="number" id="invest-custom-amount" step="0.01" min="0" class="w-full bg-black/50 border border-gold-600/30 rounded-lg px-4 py-2 text-gold-400 focus:border-gold-500 focus:outline-none" placeholder="0.00">
+          </div>
+          <button id="invest-now-btn" class="w-full bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black hover:shadow-lg hover:shadow-gold-600/30 font-medium rounded-lg px-4 py-2 text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold-400/50 cursor-pointer">
             Invest Now
           </button>
         </div>
       </div>
     `;
+    
+    // Initialize investment functionality after modal content is populated
+    setTimeout(() => {
+      initInvestModal();
+    }, 100);
   }
+}
+
+// Initialize investment modal functionality
+function initInvestModal() {
+  const investModal = document.getElementById('invest-modal');
+  if (!investModal) return;
+  
+  let selectedAmount = 0;
+  
+  // Handle investment option button clicks
+  const optionButtons = investModal.querySelectorAll('.invest-option-btn');
+  optionButtons.forEach(btn => {
+    // Remove existing listeners to avoid duplicates
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    
+    newBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Remove active state from all buttons
+      investModal.querySelectorAll('.invest-option-btn').forEach(b => {
+        b.classList.remove('bg-gold-600/20', 'border-gold-500');
+        b.classList.add('border-gold-600');
+      });
+      // Add active state to clicked button
+      newBtn.classList.add('bg-gold-600/20', 'border-gold-500');
+      newBtn.classList.remove('border-gold-600');
+      
+      // Set selected amount
+      selectedAmount = parseFloat(newBtn.getAttribute('data-invest-amount'));
+      
+      // Clear custom amount input
+      const customInput = investModal.querySelector('#invest-custom-amount');
+      if (customInput) customInput.value = '';
+    });
+  });
+  
+  // Handle custom amount input
+  const customInput = investModal.querySelector('#invest-custom-amount');
+  if (customInput) {
+    customInput.addEventListener('input', (e) => {
+      e.stopPropagation();
+      const value = parseFloat(e.target.value);
+      if (!isNaN(value) && value > 0) {
+        selectedAmount = value;
+        // Remove active state from option buttons
+        investModal.querySelectorAll('.invest-option-btn').forEach(b => {
+          b.classList.remove('bg-gold-600/20', 'border-gold-500');
+          b.classList.add('border-gold-600');
+        });
+      }
+    });
+  }
+  
+  // Handle "Invest Now" button
+  const investNowBtn = investModal.querySelector('#invest-now-btn');
+  if (investNowBtn) {
+    // Remove existing listener to avoid duplicates
+    const newInvestBtn = investNowBtn.cloneNode(true);
+    investNowBtn.parentNode.replaceChild(newInvestBtn, investNowBtn);
+    
+    newInvestBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Get final amount (from custom input if filled, otherwise from selected button)
+      let finalAmount = selectedAmount;
+      if (customInput && customInput.value) {
+        const customValue = parseFloat(customInput.value);
+        if (!isNaN(customValue) && customValue > 0) {
+          finalAmount = customValue;
+        }
+      }
+      
+      if (!finalAmount || finalAmount <= 0) {
+        alert('Please select an investment amount or enter a custom amount');
+        return;
+      }
+      
+      // Get current account balance
+      const accounts = loadBankAccounts();
+      const currentAccount = accounts.find(acc => acc.accountType === 'current');
+      
+      if (!currentAccount) {
+        alert('No current account found. Please set up a current account first.');
+        return;
+      }
+      
+      if (currentAccount.balance < finalAmount) {
+        alert('Insufficient balance. Please check your account balance.');
+        return;
+      }
+      
+      // Deduct investment amount from current account
+      currentAccount.balance -= finalAmount;
+      
+      // Save accounts
+      const savedAccounts = localStorage.getItem('bankAccounts');
+      if (savedAccounts) {
+        const allAccounts = JSON.parse(savedAccounts);
+        const accountIndex = allAccounts.findIndex(acc => acc.id === currentAccount.id);
+        if (accountIndex !== -1) {
+          allAccounts[accountIndex] = currentAccount;
+          localStorage.setItem('bankAccounts', JSON.stringify(allAccounts));
+        } else {
+          // If not found in saved accounts, add it
+          allAccounts.push(currentAccount);
+          localStorage.setItem('bankAccounts', JSON.stringify(allAccounts));
+        }
+      } else {
+        // If no saved accounts, save the updated current account
+        localStorage.setItem('bankAccounts', JSON.stringify([currentAccount]));
+      }
+      
+      // Update header balance
+      if (window.updateHeaderBalance) {
+        window.updateHeaderBalance();
+      }
+      
+      // Show success message
+      alert(`Successfully invested $${finalAmount.toFixed(2)} in the project!`);
+      
+      // Close modal
+      investModal.classList.add('hidden');
+      document.body.style.overflow = '';
+      
+      // Reset form
+      selectedAmount = 0;
+      investModal.querySelectorAll('.invest-option-btn').forEach(b => {
+        b.classList.remove('bg-gold-600/20', 'border-gold-500');
+        b.classList.add('border-gold-600');
+      });
+      if (customInput) customInput.value = '';
+    });
+  }
+  
+  // Stop propagation on modal content to prevent closing when clicking inside
+  const modalContent = investModal.querySelector('div.rounded-xl');
+  if (modalContent) {
+    modalContent.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
+  
+  // Stop propagation on form inputs
+  const formInputs = investModal.querySelectorAll('input, button');
+  formInputs.forEach(input => {
+    input.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+    input.addEventListener('focus', (e) => {
+      e.stopPropagation();
+    });
+  });
 }
 
 // Language dropdown functionality
@@ -843,7 +1005,7 @@ function initProfilePage() {
     themeButton.addEventListener('click', () => {
       currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
       localStorage.setItem('theme', currentTheme);
-      updateThemeButton(currentTheme, themeButton, themeIcon);
+      applyTheme(currentTheme);
     });
   }
   
@@ -859,6 +1021,45 @@ function initProfilePage() {
       localStorage.setItem('notifications', notificationsEnabled.toString());
       updateNotificationsButton(notificationsEnabled, notificationsButton);
     });
+  }
+}
+
+// Global theme management
+function applyTheme(theme) {
+  const html = document.documentElement;
+  const body = document.body;
+  
+  if (theme === 'light') {
+    html.classList.add('light-mode');
+    html.classList.remove('dark-mode');
+    body.classList.add('light-mode');
+    body.classList.remove('dark-mode');
+    
+    // Apply light mode styles via CSS variables
+    html.style.setProperty('--bg-primary', '#f8f9fa');
+    html.style.setProperty('--bg-secondary', '#ffffff');
+    html.style.setProperty('--text-primary', '#1a1a1a');
+    html.style.setProperty('--text-secondary', '#4a5568');
+    html.style.setProperty('--border-color', '#e2e8f0');
+  } else {
+    html.classList.add('dark-mode');
+    html.classList.remove('light-mode');
+    body.classList.add('dark-mode');
+    body.classList.remove('light-mode');
+    
+    // Apply dark mode styles (default)
+    html.style.setProperty('--bg-primary', '#000000');
+    html.style.setProperty('--bg-secondary', '#111827');
+    html.style.setProperty('--text-primary', '#fbbf24');
+    html.style.setProperty('--text-secondary', '#d97706');
+    html.style.setProperty('--border-color', 'rgba(217, 119, 6, 0.3)');
+  }
+  
+  // Update theme button if it exists
+  const themeButton = document.querySelector('[data-settings-theme]');
+  const themeIcon = document.querySelector('[data-theme-icon]');
+  if (themeButton) {
+    updateThemeButton(theme, themeButton, themeIcon);
   }
 }
 
@@ -878,6 +1079,12 @@ function updateThemeButton(theme, button, icon) {
       icon.innerHTML = '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>';
     }
   }
+}
+
+// Initialize theme on page load
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  applyTheme(savedTheme);
 }
 
 function updateNotificationsButton(enabled, button) {
@@ -1309,22 +1516,77 @@ function initTradeButtons() {
       const action = submitButton.querySelector('[data-trade-submit-text]').textContent.toLowerCase();
       const symbol = submitButton.querySelector('[data-trade-symbol-text]').textContent;
       
-      if (amount > 0) {
-        // Here you would normally send the trade to a backend
-        console.log(`Executing ${action} order:`, {
-          symbol,
-          amount,
-          orderType
-        });
-        
-        // Show success message (you could add a toast notification here)
-        alert(`${action === 'buy' ? 'Buy' : 'Sell'} order for ${amount} ${symbol} submitted successfully!`);
-        
-        // Close modal
-        closeTradeModal();
-      } else {
+      if (amount <= 0) {
         alert('Please enter a valid amount');
+        return;
       }
+      
+      // If buying, deduct from current account
+      if (action === 'buy') {
+        // Get final amount (with fees)
+        const finalAmountEl = tradeModal.querySelector('[data-trade-final-amount]');
+        let finalAmount = amount;
+        
+        if (finalAmountEl) {
+          const finalAmountText = finalAmountEl.textContent.replace('$', '').replace(/,/g, '');
+          finalAmount = parseFloat(finalAmountText) || amount;
+        } else {
+          // Calculate final amount with 0.1% fee
+          const fee = amount * 0.001;
+          finalAmount = amount + fee;
+        }
+        
+        // Get current account balance
+        const accounts = loadBankAccounts();
+        const currentAccount = accounts.find(acc => acc.accountType === 'current');
+        
+        if (!currentAccount) {
+          alert('No current account found. Please set up a current account first.');
+          return;
+        }
+        
+        if (currentAccount.balance < finalAmount) {
+          alert(`Insufficient balance. You need $${finalAmount.toFixed(2)} but only have $${currentAccount.balance.toFixed(2)}.`);
+          return;
+        }
+        
+        // Deduct from current account
+        currentAccount.balance -= finalAmount;
+        
+        // Save accounts
+        const savedAccounts = localStorage.getItem('bankAccounts');
+        if (savedAccounts) {
+          const allAccounts = JSON.parse(savedAccounts);
+          const accountIndex = allAccounts.findIndex(acc => acc.id === currentAccount.id);
+          if (accountIndex !== -1) {
+            allAccounts[accountIndex] = currentAccount;
+            localStorage.setItem('bankAccounts', JSON.stringify(allAccounts));
+          } else {
+            allAccounts.push(currentAccount);
+            localStorage.setItem('bankAccounts', JSON.stringify(allAccounts));
+          }
+        } else {
+          localStorage.setItem('bankAccounts', JSON.stringify([currentAccount]));
+        }
+        
+        // Update header balance
+        if (window.updateHeaderBalance) {
+          window.updateHeaderBalance();
+        }
+      }
+      
+      // Here you would normally send the trade to a backend
+      console.log(`Executing ${action} order:`, {
+        symbol,
+        amount,
+        orderType
+      });
+      
+      // Show success message
+      alert(`${action === 'buy' ? 'Buy' : 'Sell'} order for ${amount} ${symbol} submitted successfully!`);
+      
+      // Close modal
+      closeTradeModal();
     });
   }
 }
@@ -1917,14 +2179,512 @@ function closeStockModal() {
   }
 }
 
+// Global function to load accounts from localStorage
+function loadBankAccounts() {
+  const savedAccounts = localStorage.getItem('bankAccounts');
+  if (savedAccounts) {
+    return JSON.parse(savedAccounts);
+  }
+  // Default accounts
+  return [
+    {
+      id: Date.now() - 2,
+      bankName: 'International Bank of Azerbaijan',
+      iban: 'AZ21NABZ00000000137010001944',
+      accountType: 'current',
+      balance: 15420.50
+    },
+    {
+      id: Date.now() - 1,
+      bankName: 'Kapital Bank',
+      iban: 'AZ64AIIB37190000010000000001',
+      accountType: 'savings',
+      balance: 8750.25
+    }
+  ];
+}
+
+// Global function to update header balance on all pages
+function updateHeaderBalance() {
+  const headerBalance = document.querySelector('[data-header-balance]');
+  if (headerBalance) {
+    const accounts = loadBankAccounts();
+    const currentAccounts = accounts.filter(acc => acc.accountType === 'current');
+    const totalBalance = currentAccounts.reduce((sum, acc) => sum + acc.balance, 0);
+    
+    headerBalance.textContent = `$${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+  
+  // Also update profile page account balance (sum of ALL accounts)
+  const profileBalance = document.querySelector('[data-profile-balance]');
+  if (profileBalance) {
+    const accounts = loadBankAccounts();
+    const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
+    
+    profileBalance.textContent = `$${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+}
+
+// Make it globally accessible
+window.updateHeaderBalance = updateHeaderBalance;
+
+// Bank page functionality
+function initBankPage() {
+  const accountsGrid = document.getElementById('bank-accounts-grid');
+  const addAccountModal = document.getElementById('add-account-modal');
+  const addAccountSubmit = document.getElementById('add-account-submit');
+  
+  if (!accountsGrid) return;
+  
+  // Load accounts from localStorage or use default accounts
+  function loadAccounts() {
+    return loadBankAccounts();
+  }
+  
+  // Save accounts to localStorage
+  function saveAccounts(accounts) {
+    localStorage.setItem('bankAccounts', JSON.stringify(accounts));
+    // Update header balance on all pages after saving
+    updateHeaderBalance();
+  }
+  
+  // Get account type display name
+  function getAccountTypeDisplay(type) {
+    const types = {
+      'current': 'Current Account',
+      'savings': 'Savings Account',
+      'business': 'Business Account'
+    };
+    return types[type] || 'Account';
+  }
+  
+  // Get account icon emoji
+  function getAccountIcon(type) {
+    const icons = {
+      'current': '🏦',
+      'savings': '💳',
+      'business': '🏢'
+    };
+    return icons[type] || '🏦';
+  }
+  
+  // Render a single account card
+  function renderAccountCard(account) {
+    const card = document.createElement('div');
+    card.className = 'bg-black/60 backdrop-blur-sm border border-gold-600/30 rounded-xl p-6 hover:bg-black/70 hover:border-gold-500/50 transition-all duration-300 shadow-lg shadow-gold-600/20 cursor-pointer';
+    card.setAttribute('data-account-id', account.id);
+    
+    card.innerHTML = `
+      <div class="flex items-center space-x-4 mb-4">
+        <div class="text-3xl">${getAccountIcon(account.accountType)}</div>
+        <div>
+          <h3 class="text-lg font-semibold text-gold-400">${account.bankName}</h3>
+          <p class="text-sm text-gold-600">${getAccountTypeDisplay(account.accountType)}</p>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <div class="flex justify-between">
+          <span class="text-gold-600">IBAN:</span>
+          <span class="text-gold-400 font-mono text-sm">${account.iban}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gold-600">Balance:</span>
+          <span class="text-gold-400 font-semibold" data-account-balance="${account.id}">$${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </div>
+      </div>
+    `;
+    
+    // Add click handler to open deposit modal
+    card.addEventListener('click', () => {
+      openDepositModal(account);
+    });
+    
+    return card;
+  }
+  
+  // Render all accounts
+  function renderAccounts() {
+    const accounts = loadAccounts();
+    accountsGrid.innerHTML = '';
+    accounts.forEach(account => {
+      const card = renderAccountCard(account);
+      accountsGrid.appendChild(card);
+    });
+    // Update header balance after rendering
+    updateHeaderBalance();
+  }
+  
+  // Open deposit modal with account data
+  function openDepositModal(account) {
+    const depositModal = document.getElementById('deposit-account-modal');
+    const bankNameEl = document.getElementById('deposit-bank-name');
+    const currentBalanceEl = document.getElementById('deposit-current-balance');
+    const amountInput = document.getElementById('deposit-amount');
+    const accountTypeSelect = document.getElementById('deposit-account-type');
+    const cardNameInput = document.getElementById('deposit-card-name');
+    const cardNumberInput = document.getElementById('deposit-card-number');
+    const cardDateInput = document.getElementById('deposit-card-date');
+    const cardCVCInput = document.getElementById('deposit-card-cvc');
+    
+    if (!depositModal || !bankNameEl || !currentBalanceEl || !amountInput || !accountTypeSelect) return;
+    
+    // Populate modal with account data
+    bankNameEl.textContent = account.bankName;
+    currentBalanceEl.textContent = `$${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    amountInput.value = '';
+    accountTypeSelect.value = account.accountType;
+    
+    // Reset card inputs
+    if (cardNameInput) cardNameInput.value = '';
+    if (cardNumberInput) cardNumberInput.value = '';
+    if (cardDateInput) cardDateInput.value = '';
+    if (cardCVCInput) cardCVCInput.value = '';
+    
+    // Store current account ID in modal for deposit
+    depositModal.dataset.accountId = account.id;
+    
+    // Open modal
+    depositModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  
+  // Format card number input (XXXX-XXXX-XXXX-XXXX)
+  function formatCardNumber(input) {
+    let value = input.value.replace(/\D/g, ''); // Remove non-digits
+    if (value.length > 16) value = value.slice(0, 16); // Limit to 16 digits
+    
+    // Add dashes after every 4 digits
+    let formatted = '';
+    for (let i = 0; i < value.length; i++) {
+      if (i > 0 && i % 4 === 0) {
+        formatted += '-';
+      }
+      formatted += value[i];
+    }
+    
+    input.value = formatted;
+  }
+  
+  // Format expiry date input (MM/YY)
+  function formatExpiryDate(input) {
+    let value = input.value.replace(/\D/g, ''); // Remove non-digits
+    if (value.length > 4) value = value.slice(0, 4); // Limit to 4 digits
+    
+    // Add slash after 2 digits
+    if (value.length >= 2) {
+      input.value = value.slice(0, 2) + '/' + value.slice(2);
+    } else {
+      input.value = value;
+    }
+  }
+  
+  // Format CVC input (only digits, max 3)
+  function formatCVC(input) {
+    input.value = input.value.replace(/\D/g, '').slice(0, 3);
+  }
+  
+  // Handle deposit submission
+  function initDepositModal() {
+    const depositModal = document.getElementById('deposit-account-modal');
+    const depositSubmit = document.getElementById('deposit-submit');
+    const deleteSubmit = document.getElementById('delete-account-submit');
+    const amountInput = document.getElementById('deposit-amount');
+    const accountTypeSelect = document.getElementById('deposit-account-type');
+    const cardNumberInput = document.getElementById('deposit-card-number');
+    const cardDateInput = document.getElementById('deposit-card-date');
+    const cardCVCInput = document.getElementById('deposit-card-cvc');
+    
+    if (!depositModal || !depositSubmit || !amountInput || !accountTypeSelect) return;
+    
+    // Format card number input
+    if (cardNumberInput) {
+      cardNumberInput.addEventListener('input', (e) => {
+        formatCardNumber(e.target);
+      });
+      cardNumberInput.addEventListener('keypress', (e) => {
+        // Only allow digits
+        if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+          e.preventDefault();
+        }
+      });
+    }
+    
+    // Format expiry date input
+    if (cardDateInput) {
+      cardDateInput.addEventListener('input', (e) => {
+        formatExpiryDate(e.target);
+      });
+      cardDateInput.addEventListener('keypress', (e) => {
+        // Only allow digits
+        if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+          e.preventDefault();
+        }
+      });
+    }
+    
+    // Format CVC input
+    if (cardCVCInput) {
+      cardCVCInput.addEventListener('input', (e) => {
+        formatCVC(e.target);
+      });
+      cardCVCInput.addEventListener('keypress', (e) => {
+        // Only allow digits
+        if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+          e.preventDefault();
+        }
+      });
+    }
+    
+    // Handle deposit
+    depositSubmit.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const accountId = parseInt(depositModal.dataset.accountId);
+      const depositAmount = parseFloat(amountInput.value);
+      
+      // Validate card inputs
+      const cardName = document.getElementById('deposit-card-name')?.value.trim();
+      const cardNumber = cardNumberInput?.value.replace(/-/g, '');
+      const cardDate = cardDateInput?.value;
+      const cardCVC = cardCVCInput?.value;
+      
+      if (!cardName) {
+        alert('Please enter the name on the card');
+        return;
+      }
+      
+      if (!cardNumber || cardNumber.length !== 16) {
+        alert('Please enter a valid 16-digit card number');
+        return;
+      }
+      
+      if (!cardDate || !/^\d{2}\/\d{2}$/.test(cardDate)) {
+        alert('Please enter a valid expiry date (MM/YY)');
+        return;
+      }
+      
+      if (!cardCVC || cardCVC.length !== 3) {
+        alert('Please enter a valid 3-digit CVC');
+        return;
+      }
+      
+      if (!accountId || isNaN(depositAmount) || depositAmount <= 0) {
+        alert('Please enter a valid deposit amount');
+        return;
+      }
+      
+      // Load accounts and find the account to update
+      const accounts = loadAccounts();
+      const accountIndex = accounts.findIndex(acc => acc.id === accountId);
+      
+      if (accountIndex === -1) {
+        alert('Account not found');
+        return;
+      }
+      
+      // Update account balance
+      accounts[accountIndex].balance += depositAmount;
+      saveAccounts(accounts);
+      
+      // Re-render accounts to update the UI
+      renderAccounts();
+      
+      // Update the balance display in the card directly (for immediate feedback)
+      const balanceEl = document.querySelector(`[data-account-balance="${accountId}"]`);
+      if (balanceEl) {
+        balanceEl.textContent = `$${accounts[accountIndex].balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      }
+      
+      // Close modal and reset form
+      depositModal.classList.add('hidden');
+      document.body.style.overflow = '';
+      amountInput.value = '';
+      if (cardNumberInput) cardNumberInput.value = '';
+      if (cardDateInput) cardDateInput.value = '';
+      if (cardCVCInput) cardCVCInput.value = '';
+      if (document.getElementById('deposit-card-name')) document.getElementById('deposit-card-name').value = '';
+    });
+    
+    // Handle account type change
+    accountTypeSelect.addEventListener('change', (e) => {
+      e.stopPropagation();
+      
+      const accountId = parseInt(depositModal.dataset.accountId);
+      if (!accountId) return;
+      
+      const newAccountType = accountTypeSelect.value;
+      
+      // Load accounts and find the account to update
+      const accounts = loadAccounts();
+      const accountIndex = accounts.findIndex(acc => acc.id === accountId);
+      
+      if (accountIndex === -1) return;
+      
+      // If changing to "current", make sure only one account is current
+      if (newAccountType === 'current') {
+        // Find any other account that is currently "current"
+        accounts.forEach((acc, index) => {
+          if (index !== accountIndex && acc.accountType === 'current') {
+            // Change the other account to "savings"
+            acc.accountType = 'savings';
+          }
+        });
+      }
+      
+      // Update account type
+      accounts[accountIndex].accountType = newAccountType;
+      saveAccounts(accounts);
+      
+      // Re-render accounts to update the UI
+      renderAccounts();
+    });
+    
+    // Handle delete account
+    if (deleteSubmit) {
+      deleteSubmit.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const accountId = parseInt(depositModal.dataset.accountId);
+        if (!accountId) return;
+        
+        // Confirm deletion
+        if (!confirm('Are you sure you want to delete this account? This action cannot be undone.')) {
+          return;
+        }
+        
+        // Load accounts and remove the account
+        const accounts = loadAccounts();
+        const filteredAccounts = accounts.filter(acc => acc.id !== accountId);
+        saveAccounts(filteredAccounts);
+        
+        // Re-render accounts to update the UI
+        renderAccounts();
+        
+        // Close modal
+        depositModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      });
+    }
+    
+    // Stop propagation on modal content to prevent closing when clicking inside
+    const modalContent = depositModal.querySelector('div.rounded-xl');
+    if (modalContent) {
+      modalContent.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
+    
+    // Stop propagation on form inputs
+    const formInputs = depositModal.querySelectorAll('input, select, button');
+    formInputs.forEach(input => {
+      input.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+      input.addEventListener('focus', (e) => {
+        e.stopPropagation();
+      });
+    });
+  }
+  
+  // Handle add account form submission
+  if (addAccountSubmit && addAccountModal) {
+    addAccountSubmit.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const bankNameInput = document.getElementById('account-bank-name');
+      const ibanInput = document.getElementById('account-iban');
+      const accountTypeSelect = document.getElementById('account-type');
+      
+      if (!bankNameInput || !ibanInput || !accountTypeSelect) return;
+      
+      const bankName = bankNameInput.value.trim();
+      const iban = ibanInput.value.trim();
+      const accountType = accountTypeSelect.value;
+      
+      // Validate inputs
+      if (!bankName || !iban) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      // Load existing accounts
+      const accounts = loadAccounts();
+      
+      // If adding a new "current" account, change any existing "current" account to "savings"
+      if (accountType === 'current') {
+        accounts.forEach(acc => {
+          if (acc.accountType === 'current') {
+            acc.accountType = 'savings';
+          }
+        });
+      }
+      
+      // Create new account
+      const newAccount = {
+        id: Date.now(),
+        bankName: bankName,
+        iban: iban,
+        accountType: accountType,
+        balance: Math.random() * 50000 + 1000 // Random balance between $1,000 and $51,000
+      };
+      
+      // Add to accounts list
+      accounts.push(newAccount);
+      saveAccounts(accounts);
+      
+      // Render updated accounts
+      renderAccounts();
+      
+      // Reset form
+      bankNameInput.value = '';
+      ibanInput.value = '';
+      accountTypeSelect.value = 'current';
+      
+      // Close modal
+      addAccountModal.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+  }
+  
+  // Stop propagation on modal content to prevent closing when clicking inside
+  if (addAccountModal) {
+    const modalContent = addAccountModal.querySelector('div.rounded-xl');
+    if (modalContent) {
+      modalContent.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
+    
+    // Stop propagation on form inputs
+    const formInputs = addAccountModal.querySelectorAll('input, select, button');
+    formInputs.forEach(input => {
+      input.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    });
+  }
+  
+  // Initialize deposit modal
+  initDepositModal();
+  
+  // Initial render
+  renderAccounts();
+}
+
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme(); // Initialize theme first
   loadUserName(); // Load saved name on all pages
+  updateHeaderBalance(); // Update header balance on all pages
   initTabs();
   initModals();
   initLanguageDropdown();
   initForecastPage();
   initProfilePage();
+  initBankPage(); // Initialize bank page with account management
   initMarketTicker(); // Initialize market ticker with real data
   initTradingPage(); // Initialize trading page with real crypto data
   initSharesPage(); // Initialize shares page with real stock data

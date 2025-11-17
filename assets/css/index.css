@@ -1418,3 +1418,106 @@ body {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+/* Light Mode Styles */
+.light-mode {
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a5568;
+  --border-color: #e2e8f0;
+  --gold-primary: #d97706;
+  --gold-secondary: #f59e0b;
+}
+
+/* Background overrides */
+.light-mode body,
+.light-mode .bg-black,
+.light-mode [class*="bg-black"] {
+  background-color: var(--bg-secondary) !important;
+}
+
+.light-mode .bg-black\/30 {
+  background-color: rgba(248, 249, 250, 0.3) !important;
+}
+
+.light-mode .bg-black\/50 {
+  background-color: rgba(248, 249, 250, 0.5) !important;
+}
+
+.light-mode .bg-black\/60 {
+  background-color: rgba(248, 249, 250, 0.6) !important;
+}
+
+.light-mode .bg-black\/70 {
+  background-color: rgba(248, 249, 250, 0.7) !important;
+}
+
+.light-mode .bg-black\/90 {
+  background-color: rgba(248, 249, 250, 0.9) !important;
+}
+
+.light-mode .bg-black\/95 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Text color overrides */
+.light-mode .text-gold-400 {
+  color: var(--gold-primary) !important;
+}
+
+.light-mode .text-gold-600 {
+  color: var(--text-secondary) !important;
+}
+
+.light-mode .text-white {
+  color: var(--text-primary) !important;
+}
+
+/* Border overrides */
+.light-mode .border-gold-600\/20,
+.light-mode .border-gold-600\/30 {
+  border-color: rgba(217, 119, 6, 0.2) !important;
+}
+
+/* Background gradient overrides */
+.light-mode [class*="from-black"],
+.light-mode [class*="via-gray-900"],
+.light-mode [class*="to-black"] {
+  background: linear-gradient(to bottom right, #f8f9fa, #e2e8f0, #ffffff) !important;
+}
+
+/* Header and sticky elements */
+.light-mode header,
+.light-mode [class*="sticky"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px);
+  border-color: var(--border-color) !important;
+}
+
+/* Input and form elements */
+.light-mode input,
+.light-mode select,
+.light-mode textarea {
+  background-color: rgba(248, 249, 250, 0.5) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.light-mode input:focus,
+.light-mode select:focus,
+.light-mode textarea:focus {
+  border-color: var(--gold-primary) !important;
+}
+
+/* Cards and containers */
+.light-mode [class*="rounded-xl"],
+.light-mode [class*="rounded-lg"] {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  border-color: rgba(217, 119, 6, 0.2) !important;
+}
+
+/* Shadows */
+.light-mode [class*="shadow"] {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
