@@ -2628,7 +2628,7 @@ function initBankPage() {
         bankName: bankName,
         iban: iban,
         accountType: accountType,
-        balance: Math.random() * 50000 + 1000 // Random balance between $1,000 and $51,000
+        balance: 0 // Start with zero balance
       };
       
       // Add to accounts list
