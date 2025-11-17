@@ -273,7 +273,7 @@
                     <div
                       class="hidden md:flex items-center space-x-4 text-gold-400"
                     >
-                      <span class="text-sm">Welcome, Rashad Mammadov</span
+                      <span class="text-sm" data-header-name>Welcome, Rashad Mammadov</span
                       ><span class="text-sm font-semibold">15420.50 BGC</span>
                     </div>
                     <div class="relative" data-language-dropdown>
@@ -396,8 +396,8 @@
             </header>            <div
               class="bg-black/90 border-b border-gold-600/20 overflow-hidden"
             >
-              <div class="animate-scroll whitespace-nowrap py-3">
-                <div class="inline-flex space-x-8">
+              <div class="animate-scroll whitespace-nowrap py-3" data-ticker-container>
+                <div class="inline-flex space-x-8" data-ticker-content>
                   <div class="inline-flex items-center space-x-2 text-sm">
                     <span class="text-gold-400 font-semibold">BGC</span
                     ><span class="text-gold-600">$0.86</span>
@@ -1290,12 +1290,15 @@
                             </td>
                             <td class="text-right py-4 text-gold-400 font-semibold">2,500 BGC</td>
                             <td class="text-right py-4 text-green-400 font-semibold">12.3%</td>
-                            <td class="text-right py-4 text-gold-400 font-semibold">156.25 BGC</td>
+                            <td class="text-right py-4 text-blue-400 font-semibold">156.25 BGC</td>
                             <td class="text-center py-4">
                               <span class="px-2 py-1 rounded text-xs font-medium bg-green-600/20 text-green-400">Active</span>
                             </td>
                             <td class="text-right py-4">
-                              <button class="px-3 py-1 bg-gold-600/20 text-gold-400 rounded text-sm hover:bg-gold-600/30 transition-colors">Claim</button>
+                              <div class="flex space-x-2 justify-end">
+                                <button class="px-3 py-1 border border-gold-600/30 text-gold-400 rounded text-sm hover:bg-gold-600/10 transition-colors">Claim</button>
+                                <button class="px-3 py-1 bg-gold-600/10 text-gold-600 hover:bg-gold-600/20 rounded text-sm transition-colors">Unstake</button>
+                              </div>
                             </td>
                           </tr>
                           <tr class="border-b border-gold-600/10 hover:bg-gold-600/5">
@@ -1313,12 +1316,15 @@
                             </td>
                             <td class="text-right py-4 text-gold-400 font-semibold">1,800 BGC</td>
                             <td class="text-right py-4 text-green-400 font-semibold">10.7%</td>
-                            <td class="text-right py-4 text-gold-400 font-semibold">89.4 BGC</td>
+                            <td class="text-right py-4 text-blue-400 font-semibold">89.4 BGC</td>
                             <td class="text-center py-4">
                               <span class="px-2 py-1 rounded text-xs font-medium bg-green-600/20 text-green-400">Active</span>
                             </td>
                             <td class="text-right py-4">
-                              <button class="px-3 py-1 bg-gold-600/20 text-gold-400 rounded text-sm hover:bg-gold-600/30 transition-colors">Claim</button>
+                              <div class="flex space-x-2 justify-end">
+                                <button class="px-3 py-1 border border-gold-600/30 text-gold-400 rounded text-sm hover:bg-gold-600/10 transition-colors">Claim</button>
+                                <button class="px-3 py-1 bg-gold-600/10 text-gold-600 hover:bg-gold-600/20 rounded text-sm transition-colors">Unstake</button>
+                              </div>
                             </td>
                           </tr>
                           <tr class="border-b border-gold-600/10 hover:bg-gold-600/5">
@@ -1336,7 +1342,7 @@
                             </td>
                             <td class="text-right py-4 text-gold-400 font-semibold">5,000 BGC</td>
                             <td class="text-right py-4 text-green-400 font-semibold">8.5%</td>
-                            <td class="text-right py-4 text-gold-400 font-semibold">354.17 BGC</td>
+                            <td class="text-right py-4 text-blue-400 font-semibold">354.17 BGC</td>
                             <td class="text-center py-4">
                               <span class="px-2 py-1 rounded text-xs font-medium bg-gray-600/20 text-gray-400">Completed</span>
                             </td>

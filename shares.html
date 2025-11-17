@@ -273,7 +273,7 @@
                     <div
                       class="hidden md:flex items-center space-x-4 text-gold-400"
                     >
-                      <span class="text-sm">Welcome, Rashad Mammadov</span
+                      <span class="text-sm" data-header-name>Welcome, Rashad Mammadov</span
                       ><span class="text-sm font-semibold">15420.50 BGC</span>
                     </div>
                     <div class="relative" data-language-dropdown>
@@ -396,8 +396,8 @@
             </header>            <div
               class="bg-black/90 border-b border-gold-600/20 overflow-hidden"
             >
-              <div class="animate-scroll whitespace-nowrap py-3">
-                <div class="inline-flex space-x-8">
+              <div class="animate-scroll whitespace-nowrap py-3" data-ticker-container>
+                <div class="inline-flex space-x-8" data-ticker-content>
                   <div class="inline-flex items-center space-x-2 text-sm">
                     <span class="text-gold-400 font-semibold">BGC</span
                     ><span class="text-gold-600">$0.86</span>
@@ -1089,11 +1089,9 @@
                               <p class="text-gold-600 text-sm">Tesla, Inc.</p>
                             </div>
                           </div>
-                          <button class="p-1 rounded text-gold-400 bg-gold-600/20 hover:bg-gold-600/30 transition-colors">
+                          <button data-watchlist-toggle="TSLA" class="p-1 rounded text-gold-400 bg-gold-600/20 hover:bg-gold-600/30 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                              <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                              <polyline points="7 3 7 8 15 8"></polyline>
+                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                             </svg>
                           </button>
                         </div>
@@ -1122,10 +1120,10 @@
                           </div>
                         </div>
                         <div class="flex space-x-2">
-                          <button data-modal-open="trade-modal" data-trade-data='{"symbol":"TSLA","name":"Tesla, Inc.","price":"$248.50","change":"+$4.25 (+1.74%)","sector":"Automotive","description":"Electric vehicles, energy storage, and solar panel manufacturing"}' class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
+                          <button data-stock-modal-open data-stock-symbol="TSLA" data-stock-name="Tesla, Inc." data-stock-price="248.5" data-stock-change="4.25" data-stock-change-percent="1.74" data-stock-market-cap="789.2B" data-stock-volume="45.2M" data-stock-sector="Automotive" data-stock-description="Electric vehicles, energy storage, and solar panel manufacturing" data-stock-logo="🚗" class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
                             Trade
                           </button>
-                          <button class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
+                          <button data-stock-modal-open data-stock-symbol="TSLA" data-stock-name="Tesla, Inc." data-stock-price="248.5" data-stock-change="4.25" data-stock-change-percent="1.74" data-stock-market-cap="789.2B" data-stock-volume="45.2M" data-stock-sector="Automotive" data-stock-description="Electric vehicles, energy storage, and solar panel manufacturing" data-stock-logo="🚗" class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                               <circle cx="12" cy="12" r="3"></circle>
@@ -1142,11 +1140,9 @@
                               <p class="text-gold-600 text-sm">Apple Inc.</p>
                             </div>
                           </div>
-                          <button class="p-1 rounded text-gold-400 bg-gold-600/20 hover:bg-gold-600/30 transition-colors">
+                          <button data-watchlist-toggle="AAPL" class="p-1 rounded text-gold-400 bg-gold-600/20 hover:bg-gold-600/30 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                              <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                              <polyline points="7 3 7 8 15 8"></polyline>
+                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                             </svg>
                           </button>
                         </div>
@@ -1175,10 +1171,10 @@
                           </div>
                         </div>
                         <div class="flex space-x-2">
-                          <button data-modal-open="trade-modal" data-trade-data='{"symbol":"AAPL","name":"Apple Inc.","price":"$192.75","change":"-$0.95 (-0.49%)","sector":"Technology","description":"Consumer electronics, software, and digital services"}' class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
+                          <button data-stock-modal-open data-stock-symbol="AAPL" data-stock-name="Apple Inc." data-stock-price="192.75" data-stock-change="-0.95" data-stock-change-percent="-0.49" data-stock-market-cap="2.9T" data-stock-volume="52.8M" data-stock-sector="Technology" data-stock-description="Consumer electronics, software, and digital services" data-stock-logo="🍎" class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
                             Trade
                           </button>
-                          <button class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
+                          <button data-stock-modal-open data-stock-symbol="AAPL" data-stock-name="Apple Inc." data-stock-price="192.75" data-stock-change="-0.95" data-stock-change-percent="-0.49" data-stock-market-cap="2.9T" data-stock-volume="52.8M" data-stock-sector="Technology" data-stock-description="Consumer electronics, software, and digital services" data-stock-logo="🍎" class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                               <circle cx="12" cy="12" r="3"></circle>
@@ -1195,11 +1191,9 @@
                               <p class="text-gold-600 text-sm">Shell PLC</p>
                             </div>
                           </div>
-                          <button class="p-1 rounded text-gold-600 hover:text-gold-400 transition-colors">
+                          <button data-watchlist-toggle="SHEL" class="p-1 rounded text-gold-600 hover:text-gold-400 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                              <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                              <polyline points="7 3 7 8 15 8"></polyline>
+                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                             </svg>
                           </button>
                         </div>
@@ -1228,10 +1222,10 @@
                           </div>
                         </div>
                         <div class="flex space-x-2">
-                          <button data-modal-open="trade-modal" data-trade-data='{"symbol":"SHEL","name":"Shell PLC","price":"$58.90","change":"+$1.20 (+2.08%)","sector":"Energy","description":"Integrated oil and gas company with renewable energy investments"}' class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
+                          <button data-stock-modal-open data-stock-symbol="SHEL" data-stock-name="Shell PLC" data-stock-price="58.9" data-stock-change="1.2" data-stock-change-percent="2.08" data-stock-market-cap="186.4B" data-stock-volume="15.7M" data-stock-sector="Energy" data-stock-description="Integrated oil and gas company with renewable energy investments" data-stock-logo="🛢️" class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
                             Trade
                           </button>
-                          <button class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
+                          <button data-stock-modal-open data-stock-symbol="SHEL" data-stock-name="Shell PLC" data-stock-price="58.9" data-stock-change="1.2" data-stock-change-percent="2.08" data-stock-market-cap="186.4B" data-stock-volume="15.7M" data-stock-sector="Energy" data-stock-description="Integrated oil and gas company with renewable energy investments" data-stock-logo="🛢️" class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                               <circle cx="12" cy="12" r="3"></circle>
@@ -1248,11 +1242,9 @@
                               <p class="text-gold-600 text-sm">Microsoft Corporation</p>
                             </div>
                           </div>
-                          <button class="p-1 rounded text-gold-600 hover:text-gold-400 transition-colors">
+                          <button data-watchlist-toggle="MSFT" class="p-1 rounded text-gold-600 hover:text-gold-400 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                              <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                              <polyline points="7 3 7 8 15 8"></polyline>
+                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                             </svg>
                           </button>
                         </div>
@@ -1281,10 +1273,10 @@
                           </div>
                         </div>
                         <div class="flex space-x-2">
-                          <button data-modal-open="trade-modal" data-trade-data='{"symbol":"MSFT","name":"Microsoft Corporation","price":"$378.25","change":"+$2.85 (+0.76%)","sector":"Technology","description":"Cloud computing, productivity software, and AI services"}' class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
+                          <button data-stock-modal-open data-stock-symbol="MSFT" data-stock-name="Microsoft Corporation" data-stock-price="378.25" data-stock-change="2.85" data-stock-change-percent="0.76" data-stock-market-cap="2.8T" data-stock-volume="28.4M" data-stock-sector="Technology" data-stock-description="Cloud computing, productivity software, and AI services" data-stock-logo="💻" class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
                             Trade
                           </button>
-                          <button class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
+                          <button data-stock-modal-open data-stock-symbol="MSFT" data-stock-name="Microsoft Corporation" data-stock-price="378.25" data-stock-change="2.85" data-stock-change-percent="0.76" data-stock-market-cap="2.8T" data-stock-volume="28.4M" data-stock-sector="Technology" data-stock-description="Cloud computing, productivity software, and AI services" data-stock-logo="💻" class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                               <circle cx="12" cy="12" r="3"></circle>
@@ -1301,11 +1293,9 @@
                               <p class="text-gold-600 text-sm">NVIDIA Corporation</p>
                             </div>
                           </div>
-                          <button class="p-1 rounded text-gold-600 hover:text-gold-400 transition-colors">
+                          <button data-watchlist-toggle="NVDA" class="p-1 rounded text-gold-600 hover:text-gold-400 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                              <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                              <polyline points="7 3 7 8 15 8"></polyline>
+                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                             </svg>
                           </button>
                         </div>
@@ -1334,10 +1324,10 @@
                           </div>
                         </div>
                         <div class="flex space-x-2">
-                          <button data-modal-open="trade-modal" data-trade-data='{"symbol":"NVDA","name":"NVIDIA Corporation","price":"$481.6","change":"-$8.45 (-1.72%)","sector":"Technology","description":"Graphics processing units and AI computing platforms"}' class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
+                          <button data-stock-modal-open data-stock-symbol="NVDA" data-stock-name="NVIDIA Corporation" data-stock-price="481.6" data-stock-change="-8.45" data-stock-change-percent="-1.72" data-stock-market-cap="1.2T" data-stock-volume="67.3M" data-stock-sector="Technology" data-stock-description="Graphics processing units and AI computing platforms" data-stock-logo="🎮" class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
                             Trade
                           </button>
-                          <button class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
+                          <button data-stock-modal-open data-stock-symbol="NVDA" data-stock-name="NVIDIA Corporation" data-stock-price="481.6" data-stock-change="-8.45" data-stock-change-percent="-1.72" data-stock-market-cap="1.2T" data-stock-volume="67.3M" data-stock-sector="Technology" data-stock-description="Graphics processing units and AI computing platforms" data-stock-logo="🎮" class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                               <circle cx="12" cy="12" r="3"></circle>
@@ -1354,11 +1344,9 @@
                               <p class="text-gold-600 text-sm">Exxon Mobil Corporation</p>
                             </div>
                           </div>
-                          <button class="p-1 rounded text-gold-600 hover:text-gold-400 transition-colors">
+                          <button data-watchlist-toggle="XOM" class="p-1 rounded text-gold-600 hover:text-gold-400 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                              <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                              <polyline points="7 3 7 8 15 8"></polyline>
+                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                             </svg>
                           </button>
                         </div>
@@ -1387,10 +1375,10 @@
                           </div>
                         </div>
                         <div class="flex space-x-2">
-                          <button data-modal-open="trade-modal" data-trade-data='{"symbol":"XOM","name":"Exxon Mobil Corporation","price":"$104.25","change":"+$3.15 (+3.12%)","sector":"Energy","description":"Integrated oil and gas company with global operations"}' class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
+                          <button data-stock-modal-open data-stock-symbol="XOM" data-stock-name="Exxon Mobil Corporation" data-stock-price="104.25" data-stock-change="3.15" data-stock-change-percent="3.12" data-stock-market-cap="425.8B" data-stock-volume="18.9M" data-stock-sector="Energy" data-stock-description="Integrated oil and gas company with global operations" data-stock-logo="⛽" class="flex-1 px-3 py-1.5 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg text-sm transition-all duration-300">
                             Trade
                           </button>
-                          <button class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
+                          <button data-stock-modal-open data-stock-symbol="XOM" data-stock-name="Exxon Mobil Corporation" data-stock-price="104.25" data-stock-change="3.15" data-stock-change-percent="3.12" data-stock-market-cap="425.8B" data-stock-volume="18.9M" data-stock-sector="Energy" data-stock-description="Integrated oil and gas company with global operations" data-stock-logo="⛽" class="px-3 py-1.5 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg text-sm transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                               <circle cx="12" cy="12" r="3"></circle>
@@ -1553,22 +1541,72 @@
       </div>
     </div>
     
-    <!-- Trade Modal -->
-    <div id="trade-modal" data-modal class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
+    <!-- Stock Detail Modal -->
+    <div id="stock-modal" data-modal class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
       <div class="bg-black/95 border border-gold-600/30 rounded-xl p-6 max-w-2xl w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
-          <h3 class="text-2xl font-semibold text-gold-400" data-modal-title>Trade Stock</h3>
-          <button data-modal-close class="text-gold-600 hover:text-gold-400 transition-colors">
+          <h3 class="text-2xl font-semibold text-gold-400" data-stock-modal-title>TSLA - Tesla, Inc.</h3>
+          <button data-modal-close="stock-modal" class="text-gold-600 hover:text-gold-400 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
         </div>
-        <div data-modal-content class="space-y-6">
-          <!-- Content will be populated by JavaScript -->
+        <div class="space-y-6">
+          <div class="flex items-center space-x-4">
+            <span class="text-4xl" data-stock-modal-logo>🚗</span>
+            <div>
+              <h3 class="text-2xl font-bold text-gold-400" data-stock-modal-symbol>TSLA</h3>
+              <p class="text-gold-600" data-stock-modal-name>Tesla, Inc.</p>
+              <span class="inline-block px-2 py-1 rounded text-xs font-medium mt-2" data-stock-modal-sector>Automotive</span>
+            </div>
+          </div>
+          <div class="bg-gold-600/10 rounded-lg p-4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gold-600">Current Price:</span>
+              <span class="text-2xl font-bold text-gold-400" data-stock-modal-price>$248.5</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gold-600">24h Change:</span>
+              <span class="font-semibold" data-stock-modal-change>+$4.25 (+1.74%)</span>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-gold-400 font-semibold mb-2">Company Description</h4>
+            <p class="text-gold-600 text-sm leading-relaxed" data-stock-modal-description>Electric vehicles, energy storage, and solar panel manufacturing</p>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-black/30 rounded-lg p-3">
+              <p class="text-gold-600 text-sm">Market Cap</p>
+              <p class="text-gold-400 font-semibold" data-stock-modal-market-cap>789.2B</p>
+            </div>
+            <div class="bg-black/30 rounded-lg p-3">
+              <p class="text-gold-600 text-sm">Volume (24h)</p>
+              <p class="text-gold-400 font-semibold" data-stock-modal-volume>45.2M</p>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <h4 class="text-gold-400 font-semibold">Trade Options</h4>
+            <div>
+              <label class="block text-gold-400 text-sm font-medium mb-2">Number of Shares</label>
+              <input type="number" data-stock-shares-input class="w-full bg-black/50 border border-gold-600/30 rounded-lg px-4 py-2 text-gold-400 focus:border-gold-500 focus:outline-none" placeholder="0">
+            </div>
+            <div class="flex space-x-2">
+              <button data-stock-buy class="flex-1 px-4 py-2 bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-black font-medium rounded-lg transition-all duration-300">
+                Buy Shares
+              </button>
+              <button data-stock-sell class="flex-1 px-4 py-2 bg-gold-600/10 text-gold-600 hover:bg-gold-600/20 rounded-lg transition-colors">
+                Sell Shares
+              </button>
+            </div>
+            <button data-stock-watchlist-toggle class="w-full px-4 py-2 border border-gold-600/30 text-gold-400 hover:bg-gold-600/10 rounded-lg transition-colors">
+              <span data-stock-watchlist-text>Add to Watchlist</span>
+            </button>
+          </div>
         </div>
       </div>
+      <div data-modal-backdrop="stock-modal" class="hidden fixed inset-0 z-40"></div>
     </div>
     
     <script src="/assets/js/interactive.js"></script>
