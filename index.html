@@ -60,6 +60,30 @@
     
     <!-- Styles -->
     <link rel="stylesheet" href="/assets/css/index.min.css" />
+    
+    <!-- Immediate Authentication Check - Redirect to login if not authenticated -->
+    <script>
+      (function() {
+        // Check if we're already on login page
+        const currentPath = window.location.pathname;
+        const currentHref = window.location.href;
+        const isLoginPage = currentPath.includes('login.html') || currentHref.includes('login.html');
+        
+        if (!isLoginPage) {
+          // Check for authentication
+          try {
+            const currentUserId = localStorage.getItem('currentUserId');
+            if (!currentUserId || currentUserId === 'null' || currentUserId === 'undefined' || currentUserId.trim() === '') {
+              // Not authenticated - redirect to login immediately
+              window.location.replace('login.html');
+            }
+          } catch (e) {
+            // If localStorage is not available, redirect to login
+            window.location.replace('login.html');
+          }
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root">
@@ -1187,7 +1211,7 @@
                 >
                   <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xl font-semibold text-gold-400">
-                      Live Borsa Xəbərləri
+                      Live Borsa News
                     </h2>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
