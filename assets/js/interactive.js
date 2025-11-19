@@ -1253,32 +1253,69 @@ function updateTickerItem(symbol, price, changePercent) {
   marketTickerCurrentPrices[symbol] = price;
 }
 
-// Fetch Bitcoin and Ethereum - using real CoinGecko API
+// Fetch Bitcoin and Ethereum - using multiple real APIs with fallbacks
 async function fetchCryptoPrices() {
   try {
-    // Use CORS proxy to avoid CORS issues
-    const proxyUrl = 'https://api.allorigins.win/raw?url=';
-    const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true';
-    
-    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
-    if (!response.ok) throw new Error('Failed to fetch crypto prices');
-    
-    const data = await response.json();
     const previousPrices = JSON.parse(getUserItem('tickerPrices') || '{}');
     
-    // Update BTC
-    if (data.bitcoin) {
-      const btcPrice = data.bitcoin.usd;
-      const btcChange = data.bitcoin.usd_24h_change || 0;
-      updateTickerItem('btc', btcPrice, btcChange);
+    // Try Binance public API first (no rate limits, very reliable)
+    try {
+      const btcResponse = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+      const ethResponse = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT');
+      
+      if (btcResponse.ok && ethResponse.ok) {
+        const btcData = await btcResponse.json();
+        const ethData = await ethResponse.json();
+        
+        // Binance returns price as string and priceChangePercent
+        const btcPrice = parseFloat(btcData.lastPrice);
+        const btcChange = parseFloat(btcData.priceChangePercent);
+        const ethPrice = parseFloat(ethData.lastPrice);
+        const ethChange = parseFloat(ethData.priceChangePercent);
+        
+        updateTickerItem('btc', btcPrice, btcChange);
+        updateTickerItem('eth', ethPrice, ethChange);
+        return; // Success, exit early
+      }
+    } catch (binanceError) {
+      console.warn('Binance API failed, trying alternative:', binanceError);
     }
     
-    // Update ETH
-    if (data.ethereum) {
-      const ethPrice = data.ethereum.usd;
-      const ethChange = data.ethereum.usd_24h_change || 0;
-      updateTickerItem('eth', ethPrice, ethChange);
+    // Fallback to CoinGecko via proxy
+    try {
+      const proxyUrl = 'https://api.allorigins.win/raw?url=';
+      const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true';
+      
+      const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Check for rate limit error
+        if (data.status && data.status.error_code) {
+          throw new Error('Rate limit exceeded');
+        }
+        
+        // Update BTC
+        if (data.bitcoin) {
+          const btcPrice = data.bitcoin.usd;
+          const btcChange = data.bitcoin.usd_24h_change || 0;
+          updateTickerItem('btc', btcPrice, btcChange);
+        }
+        
+        // Update ETH
+        if (data.ethereum) {
+          const ethPrice = data.ethereum.usd;
+          const ethChange = data.ethereum.usd_24h_change || 0;
+          updateTickerItem('eth', ethPrice, ethChange);
+        }
+        return; // Success
+      }
+    } catch (coingeckoError) {
+      console.warn('CoinGecko API failed:', coingeckoError);
     }
+    
+    // If all APIs fail, use fallback
+    throw new Error('All crypto APIs failed');
   } catch (error) {
     console.error('Error fetching crypto prices, using fallback:', error);
     useFallbackCryptoPrices();
@@ -1308,60 +1345,81 @@ function useFallbackCryptoPrices() {
 async function fetchCommodityPrices() {
   try {
     const previousPrices = JSON.parse(getUserItem('tickerPrices') || '{}');
-    const proxyUrl = 'https://api.allorigins.win/raw?url=';
     
-    // Fetch Gold price using CoinGecko (pax-gold as proxy for gold price)
+    // Fetch Gold price - try multiple sources
     try {
-      const goldApiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=pax-gold&vs_currencies=usd&include_24hr_change=true';
-      const goldResponse = await fetch(proxyUrl + encodeURIComponent(goldApiUrl));
+      // Try using metals.live API (free tier available)
+      const goldResponse = await fetch('https://api.metals.live/v1/spot/gold');
       if (goldResponse.ok) {
         const goldData = await goldResponse.json();
-        if (goldData['pax-gold'] && goldData['pax-gold'].usd) {
-          // PAX Gold is 1:1 with gold, so we can use its price
-          const goldPrice = goldData['pax-gold'].usd;
-          const goldChange = goldData['pax-gold'].usd_24h_change || 0;
-          updateTickerItem('gold', goldPrice, goldChange);
+        if (goldData && goldData.price) {
+          const goldPrice = parseFloat(goldData.price);
+          // Calculate 24h change (approximate based on previous price)
+          const prevGold = previousPrices.gold || goldPrice;
+          const gold24hChange = prevGold ? ((goldPrice - prevGold) / prevGold) * 100 : 0;
+          updateTickerItem('gold', goldPrice, gold24hChange);
         } else {
-          throw new Error('Gold API data invalid');
+          throw new Error('Invalid gold data');
         }
       } else {
         throw new Error('Gold API failed');
       }
     } catch (goldError) {
-      console.warn('Gold API error, using fallback:', goldError);
-      // Fallback: Use simulated data
-      const prevGold = previousPrices.gold || 2055;
-      const goldChangePercent = (Math.random() * 0.8 - 0.4);
-      const goldPrice = prevGold * (1 + goldChangePercent / 100);
-      const gold24hChange = prevGold ? ((goldPrice - prevGold) / prevGold) * 100 : goldChangePercent;
-      updateTickerItem('gold', goldPrice, gold24hChange);
+      console.warn('Metals.live API failed, trying CoinGecko:', goldError);
+      
+      // Fallback to CoinGecko PAX Gold
+      try {
+        const proxyUrl = 'https://api.allorigins.win/raw?url=';
+        const goldApiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=pax-gold&vs_currencies=usd&include_24hr_change=true';
+        const goldResponse = await fetch(proxyUrl + encodeURIComponent(goldApiUrl));
+        if (goldResponse.ok) {
+          const goldData = await goldResponse.json();
+          if (goldData['pax-gold'] && goldData['pax-gold'].usd) {
+            const goldPrice = goldData['pax-gold'].usd;
+            const goldChange = goldData['pax-gold'].usd_24h_change || 0;
+            updateTickerItem('gold', goldPrice, goldChange);
+          } else {
+            throw new Error('Invalid PAX Gold data');
+          }
+        } else {
+          throw new Error('CoinGecko gold API failed');
+        }
+      } catch (coingeckoError) {
+        console.warn('CoinGecko gold API failed, using fallback:', coingeckoError);
+        // Fallback: Use simulated data
+        const prevGold = previousPrices.gold || 2055;
+        const goldChangePercent = (Math.random() * 0.8 - 0.4);
+        const goldPrice = prevGold * (1 + goldChangePercent / 100);
+        const gold24hChange = prevGold ? ((goldPrice - prevGold) / prevGold) * 100 : goldChangePercent;
+        updateTickerItem('gold', goldPrice, gold24hChange);
+      }
     }
     
-    // Fetch Oil price using alternative method
-    // Since free oil APIs are limited, we'll use a combination approach
+    // Fetch Oil price - using Alpha Vantage or alternative
     try {
-      // Try using a free commodity API (example: using a public endpoint)
-      // For production, consider using a paid API or backend proxy
-      const oilApiUrl = 'https://api.coingecko.com/api/v3/global';
+      // Try Alpha Vantage for oil futures (CL=F)
+      const proxyUrl = 'https://api.allorigins.win/raw?url=';
+      const oilApiUrl = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=CL=F&apikey=demo';
       const oilResponse = await fetch(proxyUrl + encodeURIComponent(oilApiUrl));
+      
       if (oilResponse.ok) {
-        const globalData = await oilResponse.json();
-        // Use a calculated estimate based on market data or fallback
-        // For now, we'll use simulated data with realistic ranges
-        const prevOil = previousPrices.oil || 82;
-        // Simulate small realistic changes
-        const oilChangePercent = (Math.random() * 1.0 - 0.5); // -0.5% to +0.5%
-        const oilPrice = prevOil * (1 + oilChangePercent / 100);
-        const oil24hChange = prevOil ? ((oilPrice - prevOil) / prevOil) * 100 : oilChangePercent;
-        updateTickerItem('oil', oilPrice, oil24hChange);
+        const oilData = await oilResponse.json();
+        if (oilData['Global Quote'] && oilData['Global Quote']['05. price']) {
+          const oilPrice = parseFloat(oilData['Global Quote']['05. price']);
+          const oilChange = parseFloat(oilData['Global Quote']['09. change']) || 0;
+          const oilChangePercent = parseFloat(oilData['Global Quote']['10. change percent'].replace('%', '')) || 0;
+          updateTickerItem('oil', oilPrice, oilChangePercent);
+        } else {
+          throw new Error('Invalid oil data from Alpha Vantage');
+        }
       } else {
-        throw new Error('Oil API failed');
+        throw new Error('Alpha Vantage oil API failed');
       }
     } catch (oilError) {
       console.warn('Oil API error, using fallback:', oilError);
-      // Fallback: Use simulated data
+      // Fallback: Use simulated data with realistic WTI crude oil price range
       const prevOil = previousPrices.oil || 82;
-      const oilChangePercent = (Math.random() * 0.8 - 0.4);
+      const oilChangePercent = (Math.random() * 1.0 - 0.5); // -0.5% to +0.5%
       const oilPrice = prevOil * (1 + oilChangePercent / 100);
       const oil24hChange = prevOil ? ((oilPrice - prevOil) / prevOil) * 100 : oilChangePercent;
       updateTickerItem('oil', oilPrice, oil24hChange);
@@ -2401,6 +2459,15 @@ function updateHeaderBalance() {
     const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
     
     profileBalance.textContent = `$${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+  
+  // Update portfolio section Total Balance (sum of ALL accounts)
+  const portfolioBalance = document.querySelector('[data-portfolio-balance]');
+  if (portfolioBalance) {
+    const accounts = loadBankAccounts();
+    const totalBalance = accounts.reduce((sum, acc) => sum + acc.balance, 0);
+    
+    portfolioBalance.textContent = `$${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 }
 
