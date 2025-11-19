@@ -2919,6 +2919,80 @@ function setUserItem(key, value) {
   }
 }
 
+// Initialize mobile menu toggle
+function initMobileMenu() {
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  
+  if (!menuToggle || !mobileMenu) {
+    // Elements not found, skip initialization
+    return;
+  }
+  
+  // Toggle menu on button click
+  menuToggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const isHidden = mobileMenu.classList.contains('hidden');
+    
+    if (isHidden) {
+      // Show menu
+      mobileMenu.classList.remove('hidden');
+      // Change icon to X
+      if (menuIcon) {
+        menuIcon.innerHTML = `
+          <line x1="18" x2="6" y1="6" y2="18"></line>
+          <line x1="6" x2="18" y1="6" y2="18"></line>
+        `;
+      }
+    } else {
+      // Hide menu
+      mobileMenu.classList.add('hidden');
+      // Change icon back to menu
+      if (menuIcon) {
+        menuIcon.innerHTML = `
+          <line x1="4" x2="20" y1="12" y2="12"></line>
+          <line x1="4" x2="20" y1="6" y2="6"></line>
+          <line x1="4" x2="20" y1="18" y2="18"></line>
+        `;
+      }
+    }
+  });
+  
+  // Close menu when clicking on a link
+  const menuLinks = mobileMenu.querySelectorAll('a');
+  menuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      if (menuIcon) {
+        menuIcon.innerHTML = `
+          <line x1="4" x2="20" y1="12" y2="12"></line>
+          <line x1="4" x2="20" y1="6" y2="6"></line>
+          <line x1="4" x2="20" y1="18" y2="18"></line>
+        `;
+      }
+    });
+  });
+  
+  // Close menu when clicking outside (only if menu is open)
+  document.addEventListener('click', (e) => {
+    if (!mobileMenu.classList.contains('hidden')) {
+      if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+        mobileMenu.classList.add('hidden');
+        if (menuIcon) {
+          menuIcon.innerHTML = `
+          <line x1="4" x2="20" y1="12" y2="12"></line>
+          <line x1="4" x2="20" y1="6" y2="6"></line>
+          <line x1="4" x2="20" y1="18" y2="18"></line>
+        `;
+        }
+      }
+    }
+  });
+}
+
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', () => {
   // Check if we're on login page first
@@ -2962,6 +3036,7 @@ function initializePage() {
   initTheme(); // Initialize theme first
   loadUserName(); // Load saved name on all pages
   updateHeaderBalance(); // Update header balance on all pages
+  initMobileMenu(); // Initialize mobile menu toggle
   initTabs();
   initModals();
   initLanguageDropdown();
